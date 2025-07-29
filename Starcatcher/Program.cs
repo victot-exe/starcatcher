@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Starcatcher.Contracts;
 using Starcatcher.Entities.Context;
+using Starcatcher.Entities;
+using Starcatcher.Repository;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+builder.Services.AddScoped<IRepository<Cota, int>, CotasRepository>();
+
 
 var app = builder.Build();
 
