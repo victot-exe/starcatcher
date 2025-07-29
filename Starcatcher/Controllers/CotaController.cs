@@ -16,14 +16,14 @@ namespace Starcatcher.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("hello")]
         public string Hello()
         {
             return "Hello World!";
         }
 
         [HttpPost]
-        public CotaDTOExit Post(CotaDTOEntry cota)//TODO trocar os retornos para IActionResult
+        public CotaDTOExit Post([FromBody] CotaDTOEntry cota)//TODO trocar os retornos para IActionResult
         {
             return _service.Create(cota);
         }
@@ -34,24 +34,22 @@ namespace Starcatcher.Controllers
             return _service.GetAll();
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public CotaDTOExit GetCotaById(int id)//TODO trocar os retornos para IActionResult
         {
             return _service.GetById(id);
         }
 
-        [HttpPut]
-        public CotaDTOExit UpdateCota(int id, CotaDTOEntry cotaOld)//TODO trocar os retornos para IActionResult
+        [HttpPut("{id}")]
+        public CotaDTOExit UpdateCota(int id,[FromBody] CotaDTOEntry cotaOld)//TODO trocar os retornos para IActionResult
         {
             return _service.Update(id, cotaOld);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public void DeleteCota(int id)//TODO trocar os retornos para IActionResult
         {
             _service.Delete(id);
         }
-
-
     }
 }
