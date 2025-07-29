@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Starcatcher.Contracts
 {
-    public interface IService<E, I, O>
+    public interface IService<E, I, O, U>
     {
         public E Create(I obj);
 
@@ -13,7 +13,7 @@ namespace Starcatcher.Contracts
 
         public E GetById(O id);
 
-        public E Update(O id, I obj);
+        public E Update(O id, U obj);
 
         public bool Delete(O id);
     }

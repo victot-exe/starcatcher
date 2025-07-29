@@ -5,7 +5,7 @@ using Starcatcher.Repository;
 
 namespace Starcatcher.Services
 {
-    public class CotaService : IService<CotaDTOExit, CotaDTOEntry, int>
+    public class CotaService : IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate>
     {
         private readonly IRepository<Cota, int> _repository;
         public CotaService(IRepository<Cota, int> repository)
@@ -16,7 +16,7 @@ namespace Starcatcher.Services
         public CotaDTOExit Create(CotaDTOEntry obj)
         {
         //TODO Regras de negocio para a criação de cotas -> tentar usar algo semelhante a reflections
-            Cota created = _repository.Create(new Cota(obj));
+            Cota created = _repository.Create(new Cota(obj, DateOnly.FromDateTime(DateTime.Now)));
 
             return new CotaDTOExit(created);
         }
@@ -51,7 +51,7 @@ namespace Starcatcher.Services
             }
         }
 
-        public CotaDTOExit Update(int id, CotaDTOEntry obj)
+        public CotaDTOExit Update(int id, CotaDTOUpdate obj)
         {
             //TODO regras de negocio usar reflections ou algo parecido
             Cota cota = new(obj);

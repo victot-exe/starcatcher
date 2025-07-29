@@ -19,9 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 builder.Services.AddScoped<IRepository<Cota, int>, CotaRepository>();
-builder.Services.AddScoped<IService<CotaDTOExit, CotaDTOEntry, int>, CotaService>();
+builder.Services.AddScoped<IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate>, CotaService>();
 
-
+//TODO autentication mas só depois de acabar tudo
 
 var app = builder.Build();
 

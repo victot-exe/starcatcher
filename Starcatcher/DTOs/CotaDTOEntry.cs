@@ -1,11 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Starcatcher.DTOs
 {
-    public record CotaDTOEntry(int NumeroCota,
-                                decimal ValorTotal,
-                                decimal Parcela,
-                                decimal TotalPago,
-                                DateOnly DataCriacao,
-                                int GrupoId)
+    public record CotaDTOEntry(
+        [Required]int NumeroCota,
+        [Required]int GrupoId)
     {
         
     }
