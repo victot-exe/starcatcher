@@ -8,7 +8,12 @@ namespace Starcatcher.Entities
         public Cota(){}
         public Cota(CotaDTOEntry cota)
         {
-            
+            NumeroCota = cota.NumeroCota;
+            ValorTotal = cota.ValorTotal;
+            Parcela = cota.Parcela;
+            TotalPago = cota.TotalPago;
+            DataCriacao = cota.DataCriacao;
+            GrupoId = cota.GrupoId;
         }
         public int Id { get; set; }
 

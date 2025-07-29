@@ -1,6 +1,11 @@
 namespace Starcatcher.DTOs
 {
-    public enum CotaDTOEntry
+    public record CotaDTOEntry(int NumeroCota,
+                                decimal ValorTotal,
+                                decimal Parcela,
+                                decimal TotalPago,
+                                DateOnly DataCriacao,
+                                int GrupoId)
     {
         
     }
