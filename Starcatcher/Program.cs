@@ -25,7 +25,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
 app.MapControllers();//<= aqui eu mapeio os controllers com [ApiController]
 
 app.Run();
