@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Starcatcher.Services;
 using Starcatcher.DTOs;
+using Starcatcher.Contracts;
 
 namespace Starcatcher.Controllers
 {
@@ -8,9 +9,9 @@ namespace Starcatcher.Controllers
     [Route("cotas")]
     public class CotaController : ControllerBase//TODO trocar os retornos para IActionResult
     {
-        private readonly CotaService _service;
+        private readonly IService<CotaDTOExit, CotaDTOEntry, int> _service;
 
-        public CotaController(CotaService service)
+        public CotaController(IService<CotaDTOExit, CotaDTOEntry, int> service)
         {
             _service = service;
         }

@@ -4,11 +4,11 @@ using Starcatcher.Entities.Context;
 
 namespace Starcatcher.Repository
 {
-    public class CotasRepository : IRepository<Cota, int>
+    public class CotaRepository : IRepository<Cota, int>
     {
         private readonly ApplicationDbContext _context;
 
-        public CotasRepository(ApplicationDbContext context)
+        public CotaRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -44,8 +44,8 @@ namespace Starcatcher.Repository
             // Atualizando as propriedades
             entity.NumeroCota = obj.NumeroCota;
             entity.ValorTotal = obj.ValorTotal;
-            entity.ValorMensal = obj.ValorMensal;
-            entity.ValorPago = obj.ValorPago;
+            entity.Parcela = obj.Parcela;
+            entity.TotalPago = obj.TotalPago;
             entity.DataCriacao = obj.DataCriacao;
             entity.GrupoId = obj.GrupoId;
 

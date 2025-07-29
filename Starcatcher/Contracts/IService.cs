@@ -11,10 +11,10 @@ namespace Starcatcher.Contracts
 
         public List<E> GetAll();
 
-        public E GetById(O Id);
+        public E GetById(O id);
 
         public E Update(O id, I obj);
 
-        public void Delete(O id);
+        public bool Delete(O id);
     }
 }
