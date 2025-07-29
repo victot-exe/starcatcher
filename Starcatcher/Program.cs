@@ -21,10 +21,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IRepository<Cota, int>, CotaRepository>();
 builder.Services.AddScoped<IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate>, CotaService>();
 
+
+
 //TODO autentication mas só depois de acabar tudo
 
 var app = builder.Build();
-
+//Redireciona da raiz para o swagger
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/swagger");
+    return Task.CompletedTask;
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

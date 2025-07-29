@@ -39,10 +39,10 @@ namespace Starcatcher.Migrations
                     b.Property<int>("NumeroCota")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ValorMensal")
+                    b.Property<decimal>("Parcela")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ValorPago")
+                    b.Property<decimal>("TotalPago")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("ValorTotal")

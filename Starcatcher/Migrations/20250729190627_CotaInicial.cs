@@ -19,8 +19,8 @@ namespace Starcatcher.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NumeroCota = table.Column<int>(type: "int", nullable: false),
                     ValorTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ValorMensal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ValorPago = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Parcela = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalPago = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     DataCriacao = table.Column<DateOnly>(type: "date", nullable: false),
                     GrupoId = table.Column<int>(type: "int", nullable: false)
                 },

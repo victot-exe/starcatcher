@@ -9,9 +9,9 @@ namespace Starcatcher.Controllers
     [Route("cotas")]
     public class CotaController : ControllerBase//TODO trocar os retornos para IActionResult
     {
-        private readonly IService<CotaDTOExit, CotaDTOEntry, int> _service;
+        private readonly IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate> _service;
 
-        public CotaController(IService<CotaDTOExit, CotaDTOEntry, int> service)
+        public CotaController(IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate> service)
         {
             _service = service;
         }
@@ -41,7 +41,7 @@ namespace Starcatcher.Controllers
         }
 
         [HttpPut("{id}")]
-        public CotaDTOExit UpdateCota(int id,[FromBody] CotaDTOEntry cotaOld)//TODO trocar os retornos para IActionResult
+        public CotaDTOExit UpdateCota(int id,[FromBody] CotaDTOUpdate cotaOld)//TODO trocar os retornos para IActionResult
         {
             return _service.Update(id, cotaOld);
         }
