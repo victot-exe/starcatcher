@@ -7,7 +7,7 @@ namespace Starcatcher.DTOs
                                 decimal Parcela,
                                 decimal TotalPago,
                                 DateOnly DataCriacao,
-                                int GrupoId
+                                GrupoConsorcio GrupoConsorcio//TODO ver de colocar só o Id do grupo e procutrar o mesmo antes de atualizar
     )
     {
         // public CotaDTOExit(Cota cota) : this(cota.Id, cota.NumeroCota, cota.ValorTotal, cota.Parcela, cota.TotalPago, cota.DataCriacao, cota.GrupoId){}

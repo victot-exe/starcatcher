@@ -9,6 +9,8 @@ namespace Starcatcher.Entities
         public decimal ValorMensal { get; set; }
 
         public List<Cota> Cotas { get; set; } = [];
+
+        public decimal ValorTotalDoGrupo { get; set; }
     }
 }
 

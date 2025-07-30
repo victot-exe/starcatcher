@@ -34,8 +34,8 @@ namespace Starcatcher.Repository
 
         public Cota GetById(int Id)
         {
-            var entitie = _context.Cotas.Find(Id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
-            return entitie;
+            return _context.Cotas.Find(Id)
+                        ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
         }
 
         public Cota Update(int id, Cota obj)
@@ -48,7 +48,7 @@ namespace Starcatcher.Repository
             entity.Parcela = obj.Parcela;
             entity.TotalPago = obj.TotalPago;
             entity.DataCriacao = obj.DataCriacao;
-            entity.GrupoId = obj.GrupoId;
+            entity.GrupoConsorcio = obj.GrupoConsorcio;
 
             _context.SaveChanges();
             return entity;

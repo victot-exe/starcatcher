@@ -16,8 +16,9 @@ namespace Starcatcher.Services
 
         public CotaDTOExit Create(CotaDTOEntry obj)
         {
-        //TODO Regras de negocio para a criação de cotas -> tentar usar algo semelhante a reflections
-            Cota created = _repository.Create(new Cota(obj, DateOnly.FromDateTime(DateTime.Now)));
+            //TODO Regras de negocio para a criação de cotas -> tentar usar algo semelhante a reflections
+            //TODO procurar um grupo pelo id ao inves de criar diretamente no construtor
+            Cota created = _repository.Create(new Cota(obj, DateOnly.FromDateTime(DateTime.Now), new GrupoConsorcio()));
 
             return new CotaDTOExit(created);
         }

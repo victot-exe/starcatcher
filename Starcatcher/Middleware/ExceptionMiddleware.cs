@@ -40,6 +40,11 @@ namespace Starcatcher.Middleware
                 statusCode = HttpStatusCode.OK;
                 mensagem = ex.Message;
             }
+            else if (ex is GenericException)
+            {
+                statusCode = HttpStatusCode.BadRequest;
+                mensagem = ex.Message;
+            }
             //TODO tratar as outras que ainda vou fazer com else if
             var result = JsonSerializer.Serialize(new
             {

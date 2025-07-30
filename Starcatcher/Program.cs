@@ -21,6 +21,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 builder.Services.AddScoped<IRepository<Cota, int>, CotaRepository>();
 builder.Services.AddScoped<IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate>, CotaService>();
+//TODO adicionar o scoped dos grupos
 
 
 

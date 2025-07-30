@@ -1,34 +1,65 @@
 using Starcatcher.Contracts;
+using Starcatcher.Entities;
+using Starcatcher.Entities.Context;
+using Starcatcher.Exceptions;
 
 namespace Starcatcher.Repository
 {
-    public class GrupoConsorcioRepository : IRepository<GrupoConsorcioRepository, int>//TODO implementar
+    public class GrupoConsorcioRepository : IRepository<GrupoConsorcio, int>//TODO implementar
     {
-
-        //ApplicationDbContext _dbContext TODO Arrumar
-        public GrupoConsorcioRepository Create(GrupoConsorcioRepository obj)
+        private readonly ApplicationDbContext _context;
+        public GrupoConsorcioRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public GrupoConsorcio Create(GrupoConsorcio obj)
+        {
+            try
+            {
+                _context.Grupos.Add(obj);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new GenericException(ex.Message);
+            }
+
+            return obj;
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var entitie = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            _context.Grupos.Remove(entitie);
+            _context.SaveChanges();
         }
 
-        public List<GrupoConsorcioRepository> GetAll()
+        public List<GrupoConsorcio> GetAll()
         {
-            throw new NotImplementedException();
+            return [.. _context.Grupos];
         }
 
-        public GrupoConsorcioRepository GetById(int Id)
+        public GrupoConsorcio GetById(int Id)
         {
-            throw new NotImplementedException();
+            return _context.Grupos.Find(Id)
+                        ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
         }
 
-        public GrupoConsorcioRepository Update(int id, GrupoConsorcioRepository obj)
+        public GrupoConsorcio Update(int id, GrupoConsorcio obj)
         {
-            throw new NotImplementedException();
+            var entity = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            //TODO logica para atualizar apenas os que não vierem null
+            entity.Cotas = obj.Cotas;
+            entity.Grupo = obj.Grupo;
+            entity.ValorMensal = obj.ValorMensal;
+            entity.ValorTotalDoGrupo = obj.ValorTotalDoGrupo;
+
+            _context.SaveChanges();
+
+            return entity;
         }
+
+        //ApplicationDbContext _dbContext TODO Arrumar
     }
 }

@@ -11,6 +11,6 @@ namespace Starcatcher.DTOs
                                 int GrupoId
     )
     {
-        public CotaDTOExit(Cota cota) : this(cota.Id, cota.NumeroCota, cota.ValorTotal, cota.Parcela, cota.TotalPago, cota.DataCriacao, cota.GrupoId){}
+        public CotaDTOExit(Cota cota) : this(cota.Id, cota.NumeroCota, cota.ValorTotal, cota.Parcela, cota.TotalPago, cota.DataCriacao, cota.GrupoConsorcioId){}
     }
 }
