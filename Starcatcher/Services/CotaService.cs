@@ -9,14 +9,19 @@ namespace Starcatcher.Services
     public class CotaService : IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate>
     {
         private readonly IRepository<Cota, int> _repository;
-        public CotaService(IRepository<Cota, int> repository)
+        private readonly ValidationExecutor _validations;
+        public CotaService(IRepository<Cota, int> repository, ValidationExecutor validations)
         {
             _repository = repository;
+            _validations = validations;
         }
 
         public CotaDTOExit Create(CotaDTOEntry obj)
         {
             //TODO Regras de negocio para a criação de cotas -> tentar usar algo semelhante a reflections
+            //TODO regra para gerar o numero da cota, verificar se ainda tem cota disponível no grupo selecionado
+            //TODO regra que vai pegar o valor padrão para cotas naquele grupo e pegar os dados como, valor da parcela, definir o total pago como 0, 
+            _validations.ExecuteAll(obj);//<- teoricamente aqui estão as validações, não testado ainda
             //TODO procurar um grupo pelo id ao inves de criar diretamente no construtor
             Cota created = _repository.Create(new Cota(obj, DateOnly.FromDateTime(DateTime.Now), new GrupoConsorcio()));
 

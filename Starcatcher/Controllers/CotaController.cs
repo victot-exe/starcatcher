@@ -25,6 +25,8 @@ namespace Starcatcher.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] CotaDTOEntry cota)
         {
+            //USando a reflection aqui
+
             CotaDTOExit result = _service.Create(cota);
             return Created("/" + result.Id, result);
         }

@@ -19,10 +19,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+//Cotas
 builder.Services.AddScoped<IRepository<Cota, int>, CotaRepository>();
 builder.Services.AddScoped<IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate>, CotaService>();
-//TODO adicionar o scoped dos grupos
-
+//Grupos
+builder.Services.AddScoped<IRepository<GrupoConsorcio, int>, GrupoConsorcioRepository>();
+builder.Services.AddScoped<IService<GrupoConsorcio, GrupoConsorcio, int, GrupoConsorcio>, GrupoConsorcioService>();
+//TODO regras de negocio que não permitem criar novos grupos a partir de cotas, a conta já deve vir pertencente a um grupo
+builder.Services.AddScoped<ValidationExecutor>();
 
 
 //TODO autentication mas só depois de acabar tudo
