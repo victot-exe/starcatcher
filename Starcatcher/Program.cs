@@ -5,6 +5,7 @@ using Starcatcher.Entities;
 using Starcatcher.Repository;
 using Starcatcher.DTOs;
 using Starcatcher.Services;
+using Starcatcher.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +41,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();//aqui eu injeto o middleware que é responsável por automatizar o tratamento das exceções
 
 app.MapControllers();//<= aqui eu mapeio os controllers com [ApiController]
 

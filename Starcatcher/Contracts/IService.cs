@@ -15,6 +15,6 @@ namespace Starcatcher.Contracts
 
         public E Update(O id, U obj);
 
-        public bool Delete(O id);
+        public void Delete(O id);
     }
 }

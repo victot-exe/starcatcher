@@ -1,6 +1,7 @@
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.Entities.Context;
+using Starcatcher.Exceptions;
 
 namespace Starcatcher.Repository
 {
@@ -21,7 +22,7 @@ namespace Starcatcher.Repository
 
         public void Delete(int id)
         {
-            var entity = _context.Cotas.Find(id) ?? throw new Exception("O Id Solicitado não existe");
+            var entity = _context.Cotas.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
             _context.Cotas.Remove(entity);
             _context.SaveChanges();
         }
@@ -33,13 +34,13 @@ namespace Starcatcher.Repository
 
         public Cota GetById(int Id)
         {
-            var entitie = _context.Cotas.Find(Id) ?? throw new Exception("O Id Solicitado não existe");
+            var entitie = _context.Cotas.Find(Id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
             return entitie;
         }
 
         public Cota Update(int id, Cota obj)
         {
-            var entity = _context.Cotas.Find(id) ?? throw new Exception("O Id Solicitado não existe");
+            var entity = _context.Cotas.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
 
             // Atualizando as propriedades
             entity.NumeroCota = obj.NumeroCota;

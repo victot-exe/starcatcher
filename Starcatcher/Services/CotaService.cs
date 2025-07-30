@@ -1,7 +1,8 @@
+using Microsoft.IdentityModel.Tokens;
 using Starcatcher.Contracts;
 using Starcatcher.DTOs;
 using Starcatcher.Entities;
-using Starcatcher.Repository;
+using Starcatcher.Exceptions;
 
 namespace Starcatcher.Services
 {
@@ -21,34 +22,24 @@ namespace Starcatcher.Services
             return new CotaDTOExit(created);
         }
 
-        public bool Delete(int id)
+        public void Delete(int id)
         {
-            try//TODO verificar se é a melhor maneira ou se tem melhores, um handler personalizado e automatico como no spring
-            {
-                _repository.Delete(id);
-            }
-            catch (Exception)//TODO trocar pela exceção personalizada que eu vou fazer
-            {
-                return false;
-            }
-            return true;
+            _repository.Delete(id);
         }
 
         public List<CotaDTOExit> GetAll()
         {
-            return [.. _repository.GetAll().Select(c => new CotaDTOExit(c))];//TODO fazer verificação para o caso de a lista estar vazia e lançar a exceção
+            List<CotaDTOExit> saida = [.. _repository.GetAll().Select(c => new CotaDTOExit(c))];//TODO fazer verificação para o caso de a lista estar vazia e lançar a exceção
+            if (saida.IsNullOrEmpty())
+            {
+                throw new ListaVaziaException();
+            }
+            return saida;
         }
 
         public CotaDTOExit GetById(int id)
         {
-            try
-            {
-                return new(_repository.GetById(id));
-            }
-            catch
-            {
-                throw new Exception();//TODO Tratar melhor este erro
-            }
+            return new(_repository.GetById(id));
         }
 
         public CotaDTOExit Update(int id, CotaDTOUpdate obj)
