@@ -7,7 +7,7 @@ namespace Starcatcher.Controllers
 {
     [ApiController]
     [Route("cotas")]
-    public class CotaController : ControllerBase//TODO trocar os retornos para IActionResult
+    public class CotaController : ControllerBase//TODO testar os retornos para IActionResult
     {
         private readonly IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate> _service;
 
@@ -23,33 +23,36 @@ namespace Starcatcher.Controllers
         }
 
         [HttpPost]
-        public CotaDTOExit Post([FromBody] CotaDTOEntry cota)//TODO trocar os retornos para IActionResult
+        public IActionResult Post([FromBody] CotaDTOEntry cota)
         {
-            return _service.Create(cota);
+            CotaDTOExit result = _service.Create(cota);
+            return Created("/" + result.Id, result);
         }
 
         [HttpGet]
-        public List<CotaDTOExit> GetAllCotas()//TODO trocar os retornos para IActionResult
+        public IActionResult GetAllCotas()
         {
-            return _service.GetAll();
+            return Ok(_service.GetAll());
         }
 
         [HttpGet("{id}")]
-        public CotaDTOExit GetCotaById(int id)//TODO trocar os retornos para IActionResult
+        public IActionResult GetCotaById(int id)
         {
-            return _service.GetById(id);
+            return Ok(_service.GetById(id));
         }
 
         [HttpPut("{id}")]
-        public CotaDTOExit UpdateCota(int id,[FromBody] CotaDTOUpdate cotaOld)//TODO trocar os retornos para IActionResult
+        public IActionResult UpdateCota(int id,[FromBody] CotaDTOUpdate cotaNew)
         {
-            return _service.Update(id, cotaOld);
+            _service.Update(id, cotaNew);
+            return Created("/" + id, cotaNew);
         }
 
         [HttpDelete("{id}")]
-        public void DeleteCota(int id)//TODO trocar os retornos para IActionResult
+        public IActionResult DeleteCota(int id)
         {
             _service.Delete(id);
+            return NoContent();
         }
     }
 }
