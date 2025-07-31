@@ -18,6 +18,7 @@ namespace Starcatcher.Services
 
         public CotaDTOExit Create(CotaDTOEntry obj)
         {
+            //TODO criar a cota vai ser procurar uma cota e pegar a primeira que bata com os requisitos e não esteja atribuida a um usuario
             //TODO Regras de negocio para a criação de cotas -> tentar usar algo semelhante a reflections
             //TODO regra para gerar o numero da cota, verificar se ainda tem cota disponível no grupo selecionado
             //TODO regra que vai pegar o valor padrão para cotas naquele grupo e pegar os dados como, valor da parcela, definir o total pago como 0, 

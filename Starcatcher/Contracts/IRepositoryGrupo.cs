@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace Starcatcher.Contracts
 {
-    public interface IRepository<T, I>
+    public interface IRepositoryGrupo<T, I, L>
     {
         public T Create(T obj);
 
@@ -11,5 +16,7 @@ namespace Starcatcher.Contracts
         public T Update(I id, T obj);
 
         public void Delete(I id);
+
+        public T UpdateList(I id, List<L> list);
     }
 }

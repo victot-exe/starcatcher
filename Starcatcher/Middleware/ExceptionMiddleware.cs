@@ -45,6 +45,11 @@ namespace Starcatcher.Middleware
                 statusCode = HttpStatusCode.BadRequest;
                 mensagem = ex.Message;
             }
+            else if (ex is NotValidException)
+            {
+                statusCode = HttpStatusCode.BadRequest;
+                mensagem = ex.Message;
+            }
             //TODO tratar as outras que ainda vou fazer com else if
             var result = JsonSerializer.Serialize(new
             {

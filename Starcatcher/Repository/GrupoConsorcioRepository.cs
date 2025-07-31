@@ -1,3 +1,4 @@
+using Microsoft.Identity.Client;
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.Entities.Context;
@@ -5,7 +6,7 @@ using Starcatcher.Exceptions;
 
 namespace Starcatcher.Repository
 {
-    public class GrupoConsorcioRepository : IRepository<GrupoConsorcio, int>//TODO implementar
+    public class GrupoConsorcioRepository : IRepositoryGrupo<GrupoConsorcio, int, Cota>//TODO implementar
     {
         private readonly ApplicationDbContext _context;
         public GrupoConsorcioRepository(ApplicationDbContext context)
@@ -50,16 +51,24 @@ namespace Starcatcher.Repository
         {
             var entity = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
             //TODO logica para atualizar apenas os que não vierem null
-            entity.Cotas = obj.Cotas;
             entity.Grupo = obj.Grupo;
-            entity.ValorMensal = obj.ValorMensal;
-            entity.ValorTotalDoGrupo = obj.ValorTotalDoGrupo;
+            entity.Cotas = obj.Cotas;
+            entity.ValorTotalDoGrupoSemTaxa = obj.ValorTotalDoGrupoSemTaxa;
+            entity.QuantidadeDeCotas = obj.QuantidadeDeCotas;
+            entity.ValorTotalDoGrupoComTaxa = obj.ValorTotalDoGrupoComTaxa;
+            entity.QuantidadeDeParcelas = obj.QuantidadeDeParcelas;
 
             _context.SaveChanges();
 
             return entity;
         }
 
-        //ApplicationDbContext _dbContext TODO Arrumar
+        public GrupoConsorcio UpdateList(int id, List<Cota> cotas)
+        {
+            var entity = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            entity.Cotas = cotas;
+
+            return entity;
+        }
     }
 }

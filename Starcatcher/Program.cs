@@ -7,7 +7,6 @@ using Starcatcher.DTOs;
 using Starcatcher.Services;
 using Starcatcher.Middleware;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -23,11 +22,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IRepository<Cota, int>, CotaRepository>();
 builder.Services.AddScoped<IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate>, CotaService>();
 //Grupos
-builder.Services.AddScoped<IRepository<GrupoConsorcio, int>, GrupoConsorcioRepository>();
-builder.Services.AddScoped<IService<GrupoConsorcio, GrupoConsorcio, int, GrupoConsorcio>, GrupoConsorcioService>();
+builder.Services.AddScoped<IRepositoryGrupo<GrupoConsorcio, int, Cota>, GrupoConsorcioRepository>();
+builder.Services.AddScoped<IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio>, GrupoConsorcioService>();
 //TODO regras de negocio que não permitem criar novos grupos a partir de cotas, a conta já deve vir pertencente a um grupo
 builder.Services.AddScoped<ValidationExecutor>();
-
 
 //TODO autentication mas só depois de acabar tudo
 

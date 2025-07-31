@@ -6,7 +6,7 @@ namespace Starcatcher.DTOs
                                 decimal ValorTotal,
                                 decimal Parcela,
                                 decimal TotalPago,
-                                DateOnly DataCriacao,
+                                DateOnly DataDeAtribuicao,
                                 GrupoConsorcio GrupoConsorcio//TODO ver de colocar só o Id do grupo e procutrar o mesmo antes de atualizar
     )
     {

@@ -9,28 +9,41 @@ namespace Starcatcher.Entities
         public Cota(CotaDTOEntry cota, DateOnly date, GrupoConsorcio grupo)//TODO em service pegar o id do grupo e pegar um grupo existente ou criar um novo
         {
             NumeroCota = cota.NumeroCota;
-            // ValorTotal = cota.ValorTotal; //TODO logica do service para enviar a data
-            // Parcela = cota.Parcela; //TODO logica no service para pegar o valor da parcela
-            // TotalPago = cota.TotalPago; //TODO provavelmente no momento da criação será 0
-            DataCriacao = date; //TODO logica para pegar a data de hoje ou pelo grupo
+            DataDeAtribuicao = date;
             GrupoConsorcio = grupo;
         }
         public Cota(CotaDTOUpdate cota)
         {
             NumeroCota = cota.NumeroCota;
-            ValorTotal = cota.ValorTotal; //TODO logica do service para enviar a data
-            Parcela = cota.Parcela; //TODO logica no service para pegar o valor da parcela
-            TotalPago = cota.TotalPago; //TODO provavelmente no momento da criação será 0
-            DataCriacao = cota.DataCriacao; //TODO logica para pegar a data de hoje ou pelo grupo
+            ValorTotal = cota.ValorTotal;
+            ValorParcela = cota.Parcela;
+            TotalPago = cota.TotalPago;
+            DataDeAtribuicao = cota.DataDeAtribuicao;
             GrupoConsorcio = cota.GrupoConsorcio;
         }
+
+        public Cota(int numeroCota, int idGrupo, decimal valorParcela, decimal valorPago, decimal valorDaCartaDeCredito, int quantidadeDeParcelas, bool atribuida, DateOnly date)
+        {
+            NumeroCota = numeroCota;
+            GrupoConsorcioId = idGrupo;
+            ValorParcela = valorParcela;
+            TotalPago = valorPago;
+            ValorDaCartaDeCredito = valorDaCartaDeCredito;
+            QteParcelas = quantidadeDeParcelas;
+            Atribuida = atribuida;
+            DataDeAtribuicao = date;
+        }
+
         public int Id { get; set; }
         public int NumeroCota { get; set; }
-        public decimal ValorTotal { get; set; }
-        public decimal Parcela { get; set; }
+        public decimal ValorTotal { get; set; }//acho que não precisa
+        public decimal ValorParcela { get; set; }
         public decimal TotalPago { get; set; }
-        public DateOnly DataCriacao { get; set; }
+        public DateOnly DataDeAtribuicao { get; set; }
         public GrupoConsorcio GrupoConsorcio { get; set; } = null!;
         public int GrupoConsorcioId { get; set; }//prop referente a FK
+        public decimal ValorDaCartaDeCredito { get; set; }
+        public bool Atribuida { get; set; }
+        public int QteParcelas { get; set; }
     }
 }

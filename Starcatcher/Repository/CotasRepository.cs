@@ -45,9 +45,9 @@ namespace Starcatcher.Repository
             // Atualizando as propriedades
             entity.NumeroCota = obj.NumeroCota;
             entity.ValorTotal = obj.ValorTotal;
-            entity.Parcela = obj.Parcela;
+            entity.ValorParcela = obj.ValorParcela;
             entity.TotalPago = obj.TotalPago;
-            entity.DataCriacao = obj.DataCriacao;
+            entity.DataDeAtribuicao = obj.DataDeAtribuicao;
             entity.GrupoConsorcio = obj.GrupoConsorcio;
 
             _context.SaveChanges();

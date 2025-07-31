@@ -1,17 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
+using Starcatcher.DTOs;
+using Starcatcher.Factories;
 
 namespace Starcatcher.Services
 {
-    public class GrupoConsorcioService : IService<GrupoConsorcio, GrupoConsorcio, int, GrupoConsorcio>
+    public class GrupoConsorcioService : IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio>
     {
-        public GrupoConsorcio Create(GrupoConsorcio obj)
+        private readonly IRepositoryGrupo<GrupoConsorcio, int, Cota> _repository;
+
+        public GrupoConsorcioService(IRepositoryGrupo<GrupoConsorcio, int, Cota> repository)
         {
-            throw new NotImplementedException();
+            _repository = repository;
+        }
+
+        public GrupoConsorcio Create(GrupoConsorcioDTOEntry obj)
+        {
+            //TODO validar os dados enviados
+
+            GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(obj));
+            _repository.UpdateList(result.Id, GrupoConsorcioFactory.GerarCotas(result));
+            return result;
         }
 
         public void Delete(int id)
