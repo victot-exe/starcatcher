@@ -2,7 +2,7 @@ namespace Starcatcher.Contracts
 {
     public interface IRepository<T, I>
     {
-        public T Create(T obj);
+        public T Create(I obj);
 
         public List<T> GetAll();
 

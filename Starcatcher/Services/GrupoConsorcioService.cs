@@ -17,7 +17,6 @@ namespace Starcatcher.Services
         public GrupoConsorcio Create(GrupoConsorcioDTOEntry obj)
         {
             //TODO validar os dados enviados
-
             GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(obj));
             _repository.UpdateList(result.Id, GrupoConsorcioFactory.GerarCotas(result));
             return result;
@@ -30,12 +29,12 @@ namespace Starcatcher.Services
 
         public List<GrupoConsorcio> GetAll()
         {
-            throw new NotImplementedException();
+            return [.._repository.GetAll()];
         }
 
         public GrupoConsorcio GetById(int id)
         {
-            throw new NotImplementedException();
+            return _repository.GetById(id);
         }
 
         public GrupoConsorcio Update(int id, GrupoConsorcio obj)

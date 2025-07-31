@@ -19,7 +19,7 @@ namespace Starcatcher.Factories
             Cota cota = new(
                 numeroCota, idGrupo, valorParcela, valorPago, valorDaCartaDeCredito, quantidadeDeParcelas, atribuida, dataCriacao
             );
-            return new();
+            return cota;
         }
     }
 }

@@ -25,13 +25,12 @@ namespace Starcatcher.Repository
             {
                 throw new GenericException(ex.Message);
             }
-
             return obj;
         }
 
         public void Delete(int id)
         {
-            var entitie = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            var entitie = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException(id);
             _context.Grupos.Remove(entitie);
             _context.SaveChanges();
         }
@@ -41,15 +40,15 @@ namespace Starcatcher.Repository
             return [.. _context.Grupos];
         }
 
-        public GrupoConsorcio GetById(int Id)
+        public GrupoConsorcio GetById(int id)
         {
-            return _context.Grupos.Find(Id)
-                        ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            return _context.Grupos.Find(id)
+                        ?? throw new IdNaoEncontradoException(id);
         }
 
         public GrupoConsorcio Update(int id, GrupoConsorcio obj)
         {
-            var entity = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            var entity = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException(id);
             //TODO logica para atualizar apenas os que não vierem null
             entity.Grupo = obj.Grupo;
             entity.Cotas = obj.Cotas;
@@ -65,8 +64,10 @@ namespace Starcatcher.Repository
 
         public GrupoConsorcio UpdateList(int id, List<Cota> cotas)
         {
-            var entity = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            var entity = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException(id);
             entity.Cotas = cotas;
+
+            _context.SaveChanges();
 
             return entity;
         }

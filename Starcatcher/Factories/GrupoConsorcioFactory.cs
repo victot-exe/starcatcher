@@ -23,7 +23,7 @@ namespace Starcatcher.Factories
             return valorSemJuros * (1 + taxaDeAdministracao / 100);
         }
 
-            public static List<Cota> GerarCotas( GrupoConsorcio grupo)
+        public static List<Cota> GerarCotas( GrupoConsorcio grupo)
         {
             List<Cota> cotas = [];
             int numeroCota = 1;

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Starcatcher.DTOs;
 
 namespace Starcatcher.Entities
@@ -8,7 +9,6 @@ namespace Starcatcher.Entities
         public Cota() { }
         public Cota(CotaDTOEntry cota, DateOnly date, GrupoConsorcio grupo)//TODO em service pegar o id do grupo e pegar um grupo existente ou criar um novo
         {
-            NumeroCota = cota.NumeroCota;
             DataDeAtribuicao = date;
             GrupoConsorcio = grupo;
         }
@@ -40,6 +40,7 @@ namespace Starcatcher.Entities
         public decimal ValorParcela { get; set; }
         public decimal TotalPago { get; set; }
         public DateOnly DataDeAtribuicao { get; set; }
+        [JsonIgnore]
         public GrupoConsorcio GrupoConsorcio { get; set; } = null!;
         public int GrupoConsorcioId { get; set; }//prop referente a FK
         public decimal ValorDaCartaDeCredito { get; set; }

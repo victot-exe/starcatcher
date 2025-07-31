@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Starcatcher.Services;
 using Starcatcher.DTOs;
 using Starcatcher.Contracts;
+using Starcatcher.Entities;
 
 namespace Starcatcher.Controllers
 {
@@ -9,9 +10,9 @@ namespace Starcatcher.Controllers
     [Route("cotas")]
     public class CotaController : ControllerBase//TODO testar os retornos para IActionResult
     {
-        private readonly IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate> _service;
+        private readonly IService<CotaDTOExit, int, int, CotaDTOUpdate> _service;
 
-        public CotaController(IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate> service)
+        public CotaController(IService<CotaDTOExit, int, int, CotaDTOUpdate> service)
         {
             _service = service;
         }
@@ -22,12 +23,13 @@ namespace Starcatcher.Controllers
             return "Hello World!";
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] CotaDTOEntry cota)
+        [HttpPost("{id}")]
+        public IActionResult Post(int id)
         {
             //USando a reflection aqui
 
-            CotaDTOExit result = _service.Create(cota);
+            CotaDTOExit result = _service.Create(id);
+
             return Created("/" + result.Id, result);
         }
 

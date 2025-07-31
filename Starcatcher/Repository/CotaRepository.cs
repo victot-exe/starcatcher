@@ -13,16 +13,19 @@ namespace Starcatcher.Repository
         {
             _context = context;
         }
-        public Cota Create(Cota obj)
+        public Cota Create(int obj)
         {
-            _context.Cotas.Add(obj);
+            Cota result = _context.Cotas
+                .FirstOrDefault(c => c.GrupoConsorcioId == obj && !c.Atribuida) ?? throw new IdNaoEncontradoException(obj);
+            //TODO query personalizada onde pega o primeiro da lista que está marcado como ativo
+            result.Atribuida = true;
             _context.SaveChanges();
-            return obj;
+            return result;
         }
 
         public void Delete(int id)
         {
-            var entity = _context.Cotas.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            var entity = _context.Cotas.Find(id) ?? throw new IdNaoEncontradoException(id);
             _context.Cotas.Remove(entity);
             _context.SaveChanges();
         }
@@ -32,15 +35,15 @@ namespace Starcatcher.Repository
             return [.. _context.Cotas];
         }
 
-        public Cota GetById(int Id)
+        public Cota GetById(int id)
         {
-            return _context.Cotas.Find(Id)
-                        ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            return _context.Cotas.Find(id)
+                        ?? throw new IdNaoEncontradoException(id);
         }
 
         public Cota Update(int id, Cota obj)
         {
-            var entity = _context.Cotas.Find(id) ?? throw new IdNaoEncontradoException("O Id Solicitado não existe");
+            var entity = _context.Cotas.Find(id) ?? throw new IdNaoEncontradoException(id);
 
             // Atualizando as propriedades
             entity.NumeroCota = obj.NumeroCota;

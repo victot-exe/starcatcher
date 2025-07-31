@@ -20,7 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 //Cotas
 builder.Services.AddScoped<IRepository<Cota, int>, CotaRepository>();
-builder.Services.AddScoped<IService<CotaDTOExit, CotaDTOEntry, int, CotaDTOUpdate>, CotaService>();
+builder.Services.AddScoped<IService<CotaDTOExit, int, int, CotaDTOUpdate>, CotaService>();
 //Grupos
 builder.Services.AddScoped<IRepositoryGrupo<GrupoConsorcio, int, Cota>, GrupoConsorcioRepository>();
 builder.Services.AddScoped<IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio>, GrupoConsorcioService>();
@@ -44,7 +44,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseMiddleware<ExceptionMiddleware>();//aqui eu injeto o middleware que é responsável por automatizar o tratamento das exceções
+//app.UseMiddleware<ExceptionMiddleware>();//aqui eu injeto o middleware que é responsável por automatizar o tratamento das exceções
 
 app.MapControllers();//<= aqui eu mapeio os controllers com [ApiController]
 
