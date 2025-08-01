@@ -8,9 +8,9 @@ namespace Starcatcher.Services
 {
     public class CotaService : IService<CotaDTOExit, int, int, CotaDTOUpdate>
     {
-        private readonly IRepository<Cota, int> _repository;
+        private readonly IRepositoryCota<Cota, int> _repository;
         private readonly ValidationExecutor _validations;
-        public CotaService(IRepository<Cota, int> repository, ValidationExecutor validations)
+        public CotaService(IRepositoryCota<Cota, int> repository, ValidationExecutor validations)
         {
             _repository = repository;
             _validations = validations;

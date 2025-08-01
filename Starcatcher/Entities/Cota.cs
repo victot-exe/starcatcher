@@ -46,5 +46,8 @@ namespace Starcatcher.Entities
         public decimal ValorDaCartaDeCredito { get; set; }
         public bool Atribuida { get; set; }
         public int QteParcelas { get; set; }
+        public int UserId { get; set; }
+        [JsonIgnore]
+        public User User { get; set; } = new();
     }
 }

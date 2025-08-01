@@ -1,6 +1,6 @@
 namespace Starcatcher.Contracts
 {
-    public interface IRepository<T, I>
+    public interface IRepositoryCota<T, I>
     {
         public T Create(I obj);
 

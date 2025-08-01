@@ -5,7 +5,7 @@ using Starcatcher.Exceptions;
 
 namespace Starcatcher.Repository
 {
-    public class CotaRepository : IRepository<Cota, int>
+    public class CotaRepository : IRepositoryCota<Cota, int>
     {
         private readonly ApplicationDbContext _context;
 
