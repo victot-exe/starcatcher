@@ -17,7 +17,7 @@ namespace Starcatcher.Repository
         {
             Cota result = _context.Cotas
                 .FirstOrDefault(c => c.GrupoConsorcioId == obj && !c.Atribuida) ?? throw new IdNaoEncontradoException(obj);
-            //TODO query personalizada onde pega o primeiro da lista que está marcado como ativo
+            //query personalizada onde pega o primeiro da lista que está marcado como ativo
             result.Atribuida = true;
             _context.SaveChanges();
             return result;
@@ -26,13 +26,13 @@ namespace Starcatcher.Repository
         public void Delete(int id)
         {
             var entity = _context.Cotas.Find(id) ?? throw new IdNaoEncontradoException(id);
-            _context.Cotas.Remove(entity);
+            entity.Atribuida = false;
             _context.SaveChanges();
         }
 
         public List<Cota> GetAll()
         {
-            return [.. _context.Cotas];
+            return [.. _context.Cotas.Where(c => c.Atribuida == true)];
         }
 
         public Cota GetById(int id)
