@@ -40,10 +40,11 @@ namespace Starcatcher.Repository
             return [.. _context.Users];
         }
 
-        public User GetById(int id)
+        public User GetByUsername(string username)
         {
-            return _context.Users.Find(id)
-                        ?? throw new IdNaoEncontradoException(id);
+            return _context.Users
+                    .SingleOrDefault(u => u.Username == username)
+                        ?? throw new IdNaoEncontradoException(0);
         }
 
         public User Update(int id, User obj)
@@ -63,6 +64,11 @@ namespace Starcatcher.Repository
             entity.Cotas.Add(cota);
             _context.SaveChanges();
             return entity;
+        }
+
+        public User GetById(int id)
+        {
+            return _context.Users.Find(id) ?? throw new IdNaoEncontradoException(id);
         }
     }
 }

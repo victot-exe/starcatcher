@@ -9,9 +9,9 @@ namespace Starcatcher.Controllers
     [Route("user")]
     public class UserController : ControllerBase
     {
-        private readonly IService<User, UserDTOEntry, int, UserDTOUpdate> _service;
+        private readonly IServiceUser<User, UserDTOEntry, UserDTOUpdate> _service;
 
-        public UserController(IService<User, UserDTOEntry, int, UserDTOUpdate> service)
+        public UserController(IServiceUser<User, UserDTOEntry, UserDTOUpdate> service)
         {
             _service = service;
         }

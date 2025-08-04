@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Starcatcher.DTOs;
 
 namespace Starcatcher.Entities
 {
@@ -17,5 +18,10 @@ namespace Starcatcher.Entities
 
         [InverseProperty("User")]
         public List<Cota> Cotas { get; set; } = new();
+        public User(UserDTOUpdate dto)
+        {
+            Username = dto.Username;
+            Password = dto.Password;
+        }
     }
 }

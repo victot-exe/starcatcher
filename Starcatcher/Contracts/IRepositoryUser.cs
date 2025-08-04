@@ -4,7 +4,8 @@ namespace Starcatcher.Contracts
     {
         public T Create(T obj);
         public List<T> GetAll();
-        public T GetById(I Id);
+        public T GetByUsername(string username);
+        public T GetById(int id);
         public T Update(I id, T obj);
         public void Delete(I id);
         public T AdicionarCota(I id, E cota);

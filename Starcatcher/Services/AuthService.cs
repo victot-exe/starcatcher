@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Starcatcher.DTOs
+namespace Starcatcher.Services
 {
-    public record UserDTOUpdate(
-        string Username,
-        string Password
-    )
+    public class AuthService
     {
         
     }

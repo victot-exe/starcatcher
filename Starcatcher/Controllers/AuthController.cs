@@ -1,10 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Starcatcher.DTOs;
+using Starcatcher.Contracts;
+using Starcatcher.Entities;
+using Starcatcher.Exceptions;
 
 namespace Starcatcher.Controllers
 {
@@ -13,18 +15,22 @@ namespace Starcatcher.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public AuthController(IConfiguration configuration)
+        private readonly IServiceUser<User, UserDTOEntry, UserDTOUpdate> _service;
+
+        public AuthController(IConfiguration configuration, IServiceUser<User, UserDTOEntry, UserDTOUpdate> service)
         {
             _configuration = configuration;
+            _service = service;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDTOEntry user)
         {
+            var entity = _service.GetByUsername(user.Username) ?? throw new UsuarioNaoEncontradoException();
             if (user.Username == "admin" && user.Password == "password")
             {
                 var token = GenerateJwtToken(user.Username);
-                return Ok(new {token});
+                return Ok(new { token });
             }
             return Unauthorized();
         }

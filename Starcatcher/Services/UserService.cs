@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Starcatcher.Services
 {
-    public class UserService : IService<User, UserDTOEntry, int, UserDTOUpdate>
+    public class UserService : IServiceUser<User, UserDTOEntry, UserDTOUpdate>
     {
         private readonly IRepositoryUser<User, int, Cota> _repository;
 
@@ -17,33 +17,39 @@ namespace Starcatcher.Services
             _repository = repository;
             _passwordHasher = passwordHasher;
         }
+
+
         public User Create(UserDTOEntry obj)
         {
             User user = new(obj.Username, obj.Password);//TODO logica para fazer o hash da senha no db
             user.Password = _passwordHasher.HashPassword(user, user.Password);
             _repository.Create(user);
-            Console.Write(user.ToString());
+            Console.WriteLine(user.ToString());
             return user;
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _repository.Delete(id);
         }
 
         public List<User> GetAll()
         {
-            throw new NotImplementedException();
+            return _repository.GetAll();
         }
 
-        public User GetById(int id)
+        public User GetByUsername(string username)
         {
-            throw new NotImplementedException();
+            return _repository.GetByUsername(username);
         }
 
         public User Update(int id, UserDTOUpdate obj)
         {
-            throw new NotImplementedException();
+
+            User entity = new(obj);
+            entity.Password = _passwordHasher.HashPassword(entity, entity.Password);
+            return _repository.Update(id, entity);
+
         }
     }
 }

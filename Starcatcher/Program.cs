@@ -34,7 +34,7 @@ builder.Services.AddScoped<IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int,
 builder.Services.AddScoped<ValidationExecutor>();
 //Users
 builder.Services.AddScoped<IRepositoryUser<User, int, Cota>, UserRepository>();
-builder.Services.AddScoped<IService<User, UserDTOEntry, int, UserDTOUpdate>, UserService>();
+builder.Services.AddScoped<IServiceUser<User, UserDTOEntry, UserDTOUpdate>, UserService>();
 //Hash de senha para o db
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
