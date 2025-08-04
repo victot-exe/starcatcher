@@ -7,6 +7,7 @@ using Starcatcher.DTOs;
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.Exceptions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Starcatcher.Controllers
 {
@@ -17,17 +18,21 @@ namespace Starcatcher.Controllers
         private readonly IConfiguration _configuration;
         private readonly IServiceUser<User, UserDTOEntry, UserDTOUpdate> _service;
 
-        public AuthController(IConfiguration configuration, IServiceUser<User, UserDTOEntry, UserDTOUpdate> service)
+        private readonly IPasswordHasher<User> _passwordHasher;
+
+        public AuthController(IConfiguration configuration, IServiceUser<User, UserDTOEntry, UserDTOUpdate> service, IPasswordHasher<User> passwordHasher)
         {
             _configuration = configuration;
             _service = service;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDTOEntry user)
         {
             var entity = _service.GetByUsername(user.Username) ?? throw new UsuarioNaoEncontradoException();
-            if (user.Username == "admin" && user.Password == "password")
+            var result = _passwordHasher.VerifyHashedPassword(entity, entity.Password, user.Password);
+            if (result == PasswordVerificationResult.Success)
             {
                 var token = GenerateJwtToken(user.Username);
                 return Ok(new { token });
