@@ -1,7 +1,6 @@
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.DTOs;
-using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.AspNetCore.Identity;
 
 namespace Starcatcher.Services

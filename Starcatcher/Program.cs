@@ -5,11 +5,11 @@ using Starcatcher.Entities;
 using Starcatcher.Repository;
 using Starcatcher.DTOs;
 using Starcatcher.Services;
-using Starcatcher.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +20,7 @@ var configuration = builder.Configuration;
 //Adicionando os controllers
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
@@ -54,6 +54,39 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)//Conf
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "StarcatcherAPI", Version = "v1" });
+
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name = "Auth",
+        Description = "Insira o Token JWt no formato: Bearer {seu_token}",
+        In = ParameterLocation.Header, //TODO aqui eu troco pra por o cookie
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
+    };
+
+    c.AddSecurityDefinition("Bearer", securityScheme);
+
+    var securityRequirement = new OpenApiSecurityRequirement
+    {
+        {
+            securityScheme,
+            Array.Empty<string>()
+        }
+    };
+    c.AddSecurityRequirement(securityRequirement);
+});
+
+
+
 var app = builder.Build();
 //Redireciona da raiz para o swagger
 app.MapGet("/", context =>
@@ -70,6 +103,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 //app.UseMiddleware<ExceptionMiddleware>();//aqui eu injeto o middleware que é responsável por automatizar o tratamento das exceções
+
+//adicionando o uso de autenticação
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();//<= aqui eu mapeio os controllers com [ApiController]
 

@@ -27,7 +27,7 @@ namespace Starcatcher.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        [HttpPost("login")]
+        [HttpPost("login")]//não proteger
         public IActionResult Login([FromBody] LoginDTOEntry user)
         {
             var entity = _service.GetByUsername(user.Username) ?? throw new UsuarioNaoEncontradoException();

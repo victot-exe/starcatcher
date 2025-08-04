@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Starcatcher.Services;
 using Starcatcher.DTOs;
 using Starcatcher.Contracts;
-using Starcatcher.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Starcatcher.Controllers
 {
@@ -23,6 +22,7 @@ namespace Starcatcher.Controllers
             return "Hello World!";
         }
 
+        [Authorize]
         [HttpPost("{id}")]
         public IActionResult Post(int id)
         {
@@ -33,26 +33,30 @@ namespace Starcatcher.Controllers
             return Created("/" + result.Id, result);
         }
 
-        [HttpGet]
+        [Authorize]
+        [HttpGet]//proteger
         public IActionResult GetAllCotas()
         {
             return Ok(_service.GetAll());
         }
 
-        [HttpGet("{id}")]
+        [Authorize]
+        [HttpGet("{id}")]//proteger
         public IActionResult GetCotaById(int id)
         {
             return Ok(_service.GetById(id));
         }
 
-        [HttpPut("{id}")]
+        [Authorize]
+        [HttpPut("{id}")]//proteger
         public IActionResult UpdateCota(int id,[FromBody] CotaDTOUpdate cotaNew)
         {
             _service.Update(id, cotaNew);
             return Created("/" + id, cotaNew);
         }
 
-        [HttpDelete("{id}")]
+        [Authorize]
+        [HttpDelete("{id}")]//proteger
         public IActionResult DeleteCota(int id)
         {
             _service.Delete(id);

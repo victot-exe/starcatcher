@@ -5,7 +5,7 @@ using Starcatcher.Factories;
 
 namespace Starcatcher.Services
 {
-    public class GrupoConsorcioService : IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio>
+    public class GrupoConsorcioService : IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcioDTOEntry>
     {
         private readonly IRepositoryGrupo<GrupoConsorcio, int, Cota> _repository;
 
@@ -24,7 +24,7 @@ namespace Starcatcher.Services
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _repository.Delete(id);
         }
 
         public List<GrupoConsorcio> GetAll()
@@ -37,9 +37,17 @@ namespace Starcatcher.Services
             return _repository.GetById(id);
         }
 
-        public GrupoConsorcio Update(int id, GrupoConsorcio obj)
+        public GrupoConsorcio Update(int id, GrupoConsorcioDTOEntry obj)
         {
-            throw new NotImplementedException();
+            GrupoConsorcio grupo = new(
+                obj.Nome,
+                obj.ValorFinalPorCota * obj.QuantidadeDeCotas,
+                obj.TaxaDeAdministracao,
+                obj.QuantidadeDeCotas,
+                obj.ValorFinalPorCota * (1 + obj.TaxaDeAdministracao / 100),
+                obj.ParcelasPorCota
+            );
+            return _repository.Update(id, grupo);
         }
     }
 }

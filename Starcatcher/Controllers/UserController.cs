@@ -3,6 +3,7 @@ using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.DTOs;
 using Starcatcher.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Starcatcher.Controllers
 {
@@ -17,33 +18,37 @@ namespace Starcatcher.Controllers
             _service = service;
         }
 
-        [HttpPost("novo-usuario")]
-        public User Create([FromBody] UserDTOEntry user)//TODO nao vai ser protegida essa rota
+        [HttpPost("novo-usuario")]//não proteger
+        public User Create([FromBody] UserDTOEntry user)
         {
             User userCriado = _service.Create(user);
             return userCriado;
         }
 
-        [HttpPut("{id}")]
+        [Authorize]
+        [HttpPut("{id}")]//TODO proteger
         public User Update(int id, [FromBody] UserDTOUpdate user)//TODO protegida
         {
             return _service.Update(id, user);
         }
 
-        [HttpGet]
+        [Authorize]
+        [HttpGet]//proteger
         public List<string> GetAll()
         {
             return _service.GetAll()//TODO protegida
             .Select(u => u.Username).ToList();
         }
 
-        [HttpGet("{username}")]
+        [Authorize]
+        [HttpGet("{username}")]//TODO proteger
         public string GetByUsername(string username)
         {
             return _service.GetByUsername(username).ToString() ?? throw new IdNaoEncontradoException(0);
         }
 
-        [HttpDelete("{id}")]
+        [Authorize]
+        [HttpDelete("{id}")]//TODO proteger
         public void DeleteById(int id)
         {
             _service.Delete(id);

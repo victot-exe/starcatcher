@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Starcatcher.Contracts;
 using Starcatcher.DTOs;
@@ -9,8 +10,8 @@ namespace Starcatcher.Controllers
     [Route("grupos")]
     public class GrupoConsorcioController : ControllerBase
     {
-        private readonly IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio> _service;
-        public GrupoConsorcioController(IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio> service)
+        private readonly IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcioDTOEntry> _service;
+        public GrupoConsorcioController(IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcioDTOEntry> service)
         {
             _service = service;
         }
@@ -21,23 +22,43 @@ namespace Starcatcher.Controllers
             return "GrupoConsorcioController Works!";
         }
 
-        [HttpPost]
+        [Authorize]
+        [HttpPost]//proteger
         public IActionResult Create(GrupoConsorcioDTOEntry grupo)
         {
             GrupoConsorcio result = _service.Create(grupo);
             return Created("/" + result.Id, result);
         }
 
-        [HttpGet]
+        [Authorize]
+        [HttpGet]//proteger
         public IActionResult GetAll()
         {
             return Ok(_service.GetAll());
         }
 
-        [HttpGet("{id}")]
+        [Authorize]
+        [HttpGet("{id}")]//proteger
         public IActionResult GetById(int id)
         {
             return Ok(_service.GetById(id));
+        }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public IActionResult Update(int id,[FromBody] GrupoConsorcioDTOEntry grupo)
+        {
+            var entity = _service.Update(id, grupo);
+            return Created("grupo/" + id, entity);
+        }
+        //TODO deletar
+        [Authorize]
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _service.Delete(id);
+
+            return NoContent();
         }
     }
 }
