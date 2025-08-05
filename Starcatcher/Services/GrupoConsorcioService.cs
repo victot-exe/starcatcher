@@ -19,7 +19,15 @@ namespace Starcatcher.Services
             //TODO validar os dados enviados
             GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(cotaCreate));
             _repository.UpdateList(result.Id, GrupoConsorcioFactory.GerarCotas(result.Id, cotaCreate));
-            return new();//TODO arrumar a saida correta
+            return new(result);
+        }
+
+        public GrupoConsorcioExitDto Update(int id, GrupoConsorcioCreateDto grupo)
+        {
+            //TODO validar os dados enviados
+            //TODO fazer a logica para atualizar tudo do grupo as cotas e tal, mas apenas se alterar o valor, taxa, parcela ou numero de cotas
+            GrupoConsorcio grupoUp = new();
+            return new(_repository.Update(id, grupoUp));
         }
 
         public void Delete(int id)
@@ -36,12 +44,6 @@ namespace Starcatcher.Services
         {
             var entity = _repository.GetById(id);
             return new(entity);
-        }
-
-        public GrupoConsorcioExitDto Update(int id, GrupoConsorcioUpdateDto grupo)
-        {
-            GrupoConsorcio grupoUp = new();//TODO arrumar a classe do DTOUpdate
-            return new(_repository.Update(id, grupoUp));
         }
     }
 }

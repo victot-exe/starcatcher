@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Starcatcher.Contracts;
 using Starcatcher.DTOs;
-using Starcatcher.Entities;
 
 namespace Starcatcher.Controllers
 {
@@ -10,8 +9,8 @@ namespace Starcatcher.Controllers
     [Route("grupos")]
     public class GrupoConsorcioController : ControllerBase
     {
-        private readonly IService<GrupoConsorcio, GrupoConsorcioCreateDto, int, GrupoConsorcioCreateDto> _service;
-        public GrupoConsorcioController(IService<GrupoConsorcio, GrupoConsorcioCreateDto, int, GrupoConsorcioCreateDto> service)
+        private readonly IServiceGrupo _service;
+        public GrupoConsorcioController(IServiceGrupo service)
         {
             _service = service;
         }
@@ -26,7 +25,7 @@ namespace Starcatcher.Controllers
         [HttpPost]//proteger
         public IActionResult Create(GrupoConsorcioCreateDto grupo)
         {
-            GrupoConsorcio result = _service.Create(grupo);
+            GrupoConsorcioExitDto result = _service.Create(grupo);
             return Created("/" + result.Id, result);
         }
 
@@ -45,15 +44,15 @@ namespace Starcatcher.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}")]
+        [HttpPut("{id}")]//proteger
         public IActionResult Update(int id,[FromBody] GrupoConsorcioCreateDto grupo)
         {
             var entity = _service.Update(id, grupo);
             return Created("grupo/" + id, entity);
         }
-        //TODO deletar
+        
         [Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")]//proteger
         public IActionResult Delete(int id)
         {
             _service.Delete(id);

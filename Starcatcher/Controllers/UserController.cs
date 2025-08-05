@@ -29,7 +29,7 @@ namespace Starcatcher.Controllers
         [HttpPut("{id}")]//proteger
         public IActionResult Update(int id, [FromBody] UserEntryDto user)
         {
-            var entity = _service.Update(id, user);//TODO transformar na dto de saida
+            var entity = _service.Update(id, user);
 
             return Created($"users/{entity.Username}", entity);
         }

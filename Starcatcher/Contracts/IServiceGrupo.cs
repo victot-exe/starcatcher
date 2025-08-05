@@ -11,7 +11,7 @@ namespace Starcatcher.Contracts
         public GrupoConsorcioExitDto Create(GrupoConsorcioCreateDto grupo);
         public List<GrupoConsorcioExitDto> GetAll();
         public GrupoConsorcioExitDto GetById(int id);
-        public GrupoConsorcioExitDto Update(int id, GrupoConsorcioUpdateDto obj);
+        public GrupoConsorcioExitDto Update(int id, GrupoConsorcioCreateDto obj);
         public void Delete(int id);
     }
 }
