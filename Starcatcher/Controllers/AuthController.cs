@@ -16,11 +16,11 @@ namespace Starcatcher.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private readonly IServiceUser<User, UserDTOEntry, UserDTOUpdate> _service;
+        private readonly IServiceUser<User, UserEntryDto, UserDTOUpdate> _service;
 
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public AuthController(IConfiguration configuration, IServiceUser<User, UserDTOEntry, UserDTOUpdate> service, IPasswordHasher<User> passwordHasher)
+        public AuthController(IConfiguration configuration, IServiceUser<User, UserEntryDto, UserDTOUpdate> service, IPasswordHasher<User> passwordHasher)
         {
             _configuration = configuration;
             _service = service;

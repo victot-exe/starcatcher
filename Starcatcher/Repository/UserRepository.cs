@@ -38,7 +38,7 @@ namespace Starcatcher.Repository
         {
             return _context.Users
                     .SingleOrDefault(u => u.Username == username)
-                        ?? throw new UsuarioNaoEncontrado(0);
+                        ?? throw new UsuarioNaoEncontrado(username);
         }
 
         public User Update(int id, User user)

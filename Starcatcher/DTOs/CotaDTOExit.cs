@@ -2,7 +2,8 @@ using Starcatcher.Entities;
 
 namespace Starcatcher.DTOs
 {
-    public record CotaDTOExit(int Id,
+    public record CotaDTOExit(
+                                int Id,
                                 string? NumeroCota,
                                 decimal? ValorTotal,
                                 decimal? Parcela,

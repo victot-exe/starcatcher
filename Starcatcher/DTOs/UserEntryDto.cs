@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Starcatcher.DTOs
 {
-    public record UserDTOEntry(
+    public record UserEntryDto(
         string Username,
         string Password
     )

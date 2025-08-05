@@ -5,13 +5,13 @@ namespace Starcatcher.Contracts
 {
     public interface IServiceUser
     {
-        public User Create(UserDTOEntry user);
+        public UserExitDto Create(UserEntryDto user);
 
-        public List<User> GetAll();
+        public List<UserExitDto> GetAll();
 
-        public User GetByUsername(string username);
+        public UserExitDto GetByUsername(string username);
 
-        public User Update(int id, UserDTOEntry obj);
+        public UserExitDto Update(int id, UserEntryDto obj);
 
         public void Delete(int id);
     }

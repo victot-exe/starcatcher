@@ -19,15 +19,15 @@ namespace Starcatcher.Controllers
         }
 
         [HttpPost("novo-usuario")]//não proteger
-        public IActionResult Create([FromBody] UserDTOEntry user)
+        public IActionResult Create([FromBody] UserEntryDto user)
         {
-            User userCriado = _service.Create(user);//TODO colocar o DTO de saida do usuario aqui
+            UserExitDto userCriado = _service.Create(user);
             return Created($"user/{userCriado.Username}", userCriado);
         }
 
         [Authorize]
         [HttpPut("{id}")]//proteger
-        public IActionResult Update(int id, [FromBody] UserDTOEntry user)
+        public IActionResult Update(int id, [FromBody] UserEntryDto user)
         {
             var entity = _service.Update(id, user);//TODO transformar na dto de saida
 
@@ -38,14 +38,14 @@ namespace Starcatcher.Controllers
         [HttpGet]//proteger
         public IActionResult GetAll()
         {
-            return Ok(_service.GetAll().Select(u => u.Username).ToList());//TODO Usar o DTO de saida do usuario aqui
+            return Ok(_service.GetAll());
         }
 
         [Authorize]
         [HttpGet("{username}")]//proteger
-        public IActionResult GetByUsername(string username)//TODO User o dto de saida do usuario aqui
+        public IActionResult GetByUsername(string username)
         {
-            return Ok(_service.GetByUsername(username) ?? throw new UsuarioNaoEncontrado(username));
+            return Ok(_service.GetByUsername(username));
         }//
 
         [Authorize]

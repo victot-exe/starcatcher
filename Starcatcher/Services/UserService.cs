@@ -18,13 +18,13 @@ namespace Starcatcher.Services
         }
 
 
-        public User Create(UserDTOEntry userDto)//TODO saida do DTO
+        public UserExitDto Create(UserEntryDto userDto)
         {
             User user = new(userDto.Username, userDto.Password);//logica para fazer o hash da senha no db
             user.Password = _passwordHasher.HashPassword(user, user.Password);
             _repository.Create(user);
-            Console.WriteLine(user.ToString());
-            return user;
+
+            return new(user);
         }
 
         public void Delete(int id)
@@ -32,21 +32,23 @@ namespace Starcatcher.Services
             _repository.Delete(id);
         }
 
-        public List<User> GetAll()//TODO criar dto de saida para usuario onde retorna no id do usuario, o username, e a lista com o numero e o id das cotas que ele tem
+        public List<UserExitDto> GetAll()
         {
-            return _repository.GetAll();//TODO converter para o dto que será criado
+            return [.. _repository.GetAll().Select(
+                u=> new UserExitDto(u))];
         }
 
-        public User GetByUsername(string username)
+        public UserExitDto GetByUsername(string username)
         {
-            return _repository.GetByUsername(username);//TODO saida do dto
+            return new(_repository.GetByUsername(username));
         }
 
-        public User Update(int id, UserDTOEntry user)
+        public UserExitDto Update(int id, UserEntryDto user)
         {
-            User entity = new(user.Username, user.Password);
+            User entity = new(user.Username, user.Password);//TODO verificar aqui qual esta vazio e qual não está para não ter null pointer exception
             entity.Password = _passwordHasher.HashPassword(entity, entity.Password);
-            return _repository.Update(id, entity);//TODO saida do dto
+
+            return new(_repository.Update(id, entity));
         }
     }
 }
