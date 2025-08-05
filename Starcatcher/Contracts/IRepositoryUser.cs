@@ -1,13 +1,15 @@
+using Starcatcher.Entities;
+
 namespace Starcatcher.Contracts
 {
-    public interface IRepositoryUser<T, I, E>
+    public interface IRepositoryUser
     {
-        public T Create(T obj);
-        public List<T> GetAll();
-        public T GetByUsername(string username);
-        public T GetById(int id);
-        public T Update(I id, T obj);
-        public void Delete(I id);
-        public T AdicionarCota(I id, E cota);
+        public User Create(User user);
+        public List<User> GetAll();
+        public User GetByUsername(string username);
+        public User GetById(int id);
+        public User Update(int id, User obj);
+        public void Delete(int id);
+        public User AdicionarCota(int id, Cota cota);
     }
 }

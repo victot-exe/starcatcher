@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Starcatcher.Contracts;
 using Starcatcher.DTOs;
@@ -6,23 +8,36 @@ using Starcatcher.Exceptions;
 
 namespace Starcatcher.Services
 {
-    public class CotaService : IService<CotaDTOExit, int, int, CotaDTOUpdate>
+    public class CotaService : IServiceCota
     {
-        private readonly IRepositoryCota<Cota, int> _repository;
+        private readonly IRepositoryCota _repository;
         private readonly ValidationExecutor _validations;
-        public CotaService(IRepositoryCota<Cota, int> repository, ValidationExecutor validations)
+        private readonly IServiceUser _serviceUser;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public CotaService(IRepositoryCota repository, ValidationExecutor validations, IServiceUser serviceUser, IHttpContextAccessor httpContextAccessor)
         {
             _repository = repository;
             _validations = validations;
+            _serviceUser = serviceUser;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public CotaDTOExit Create(int obj)
+        public CotaDTOExit Create(int grupoId)
         {
-            
-            _validations.ExecuteAll(obj);
-            Cota created = _repository.Create(obj);//TODO no repository pesquisar as cotas disponíveis no repository
 
-            return new CotaDTOExit(created);
+            // _validations.ExecuteAll(obj);//TODO definir as validações
+            //TODO pegar o Id do usuario
+            var user = _httpContextAccessor.HttpContext?.User;
+            var claimUserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
+            if (int.TryParse(claimUserId, out int userId))
+            {
+
+                Cota created = _repository.Create(grupoId, userId);//TODO passar o user Id para adicionar ao usuario a lista
+
+                return new CotaDTOExit(created);
+            }
+            else throw new UnauthorizedAccessException("O usuario nao esta autenticado");
         }
 
         public void Delete(int id)
@@ -32,7 +47,7 @@ namespace Starcatcher.Services
 
         public List<CotaDTOExit> GetAll()
         {
-            List<CotaDTOExit> saida = [.. _repository.GetAll().Select(c => new CotaDTOExit(c))];//TODO fazer verificação para o caso de a lista estar vazia e lançar a exceção
+            List<CotaDTOExit> saida = [.. _repository.GetAll().Select(c => new CotaDTOExit(c))];//fazer verificação para o caso de a lista estar vazia e lançar a exceção
             if (saida.IsNullOrEmpty())
             {
                 throw new ListaVaziaException();
@@ -45,10 +60,10 @@ namespace Starcatcher.Services
             return new(_repository.GetById(id));
         }
 
-        public CotaDTOExit Update(int id, CotaDTOUpdate obj)
+        public CotaDTOExit Update(int id, CotaUpdateDto update)
         {
             //TODO regras de negocio usar reflections ou algo parecido
-            Cota cota = new(obj);
+            Cota cota = new(update);
             return new(_repository.Update(id, cota));
         }
     }

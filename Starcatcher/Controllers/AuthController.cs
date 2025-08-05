@@ -34,17 +34,18 @@ namespace Starcatcher.Controllers
             var result = _passwordHasher.VerifyHashedPassword(entity, entity.Password, user.Password);
             if (result == PasswordVerificationResult.Success)
             {
-                var token = GenerateJwtToken(user.Username);
+                var token = GenerateJwtToken(entity);
                 return Ok(new { token });
             }
             return Unauthorized();
         }
 
-        private string GenerateJwtToken(string username)
+        private string GenerateJwtToken(User user)
         {
             var claims = new[]{
-                new Claim(JwtRegisteredClaimNames.Sub, username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));//aqui
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

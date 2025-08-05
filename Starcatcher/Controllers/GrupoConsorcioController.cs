@@ -10,8 +10,8 @@ namespace Starcatcher.Controllers
     [Route("grupos")]
     public class GrupoConsorcioController : ControllerBase
     {
-        private readonly IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcioDTOEntry> _service;
-        public GrupoConsorcioController(IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcioDTOEntry> service)
+        private readonly IService<GrupoConsorcio, GrupoConsorcioCreateDto, int, GrupoConsorcioCreateDto> _service;
+        public GrupoConsorcioController(IService<GrupoConsorcio, GrupoConsorcioCreateDto, int, GrupoConsorcioCreateDto> service)
         {
             _service = service;
         }
@@ -24,7 +24,7 @@ namespace Starcatcher.Controllers
 
         [Authorize]
         [HttpPost]//proteger
-        public IActionResult Create(GrupoConsorcioDTOEntry grupo)
+        public IActionResult Create(GrupoConsorcioCreateDto grupo)
         {
             GrupoConsorcio result = _service.Create(grupo);
             return Created("/" + result.Id, result);
@@ -46,7 +46,7 @@ namespace Starcatcher.Controllers
 
         [Authorize]
         [HttpPut("{id}")]
-        public IActionResult Update(int id,[FromBody] GrupoConsorcioDTOEntry grupo)
+        public IActionResult Update(int id,[FromBody] GrupoConsorcioCreateDto grupo)
         {
             var entity = _service.Update(id, grupo);
             return Created("grupo/" + id, entity);

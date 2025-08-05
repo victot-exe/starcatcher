@@ -1,14 +1,17 @@
+using Starcatcher.DTOs;
+using Starcatcher.Entities;
+
 namespace Starcatcher.Contracts
 {
-    public interface IServiceUser<T, V, U>
+    public interface IServiceUser
     {
-        public T Create(V obj);
+        public User Create(UserDTOEntry user);
 
-        public List<T> GetAll();
+        public List<User> GetAll();
 
-        public T GetByUsername(string username);
+        public User GetByUsername(string username);
 
-        public T Update(int id, U obj);
+        public User Update(int id, UserDTOEntry obj);
 
         public void Delete(int id);
     }

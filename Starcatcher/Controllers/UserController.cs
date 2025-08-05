@@ -11,44 +11,45 @@ namespace Starcatcher.Controllers
     [Route("user")]
     public class UserController : ControllerBase
     {
-        private readonly IServiceUser<User, UserDTOEntry, UserDTOUpdate> _service;
+        private readonly IServiceUser _service;
 
-        public UserController(IServiceUser<User, UserDTOEntry, UserDTOUpdate> service)
+        public UserController(IServiceUser service)
         {
             _service = service;
         }
 
         [HttpPost("novo-usuario")]//não proteger
-        public User Create([FromBody] UserDTOEntry user)
+        public IActionResult Create([FromBody] UserDTOEntry user)
         {
-            User userCriado = _service.Create(user);
-            return userCriado;
+            User userCriado = _service.Create(user);//TODO colocar o DTO de saida do usuario aqui
+            return Created($"user/{userCriado.Username}", userCriado);
         }
 
         [Authorize]
-        [HttpPut("{id}")]//TODO proteger
-        public User Update(int id, [FromBody] UserDTOUpdate user)//TODO protegida
+        [HttpPut("{id}")]//proteger
+        public IActionResult Update(int id, [FromBody] UserDTOEntry user)
         {
-            return _service.Update(id, user);
+            var entity = _service.Update(id, user);//TODO transformar na dto de saida
+
+            return Created($"users/{entity.Username}", entity);
         }
 
         [Authorize]
         [HttpGet]//proteger
-        public List<string> GetAll()
+        public IActionResult GetAll()
         {
-            return _service.GetAll()//TODO protegida
-            .Select(u => u.Username).ToList();
+            return Ok(_service.GetAll().Select(u => u.Username).ToList());//TODO Usar o DTO de saida do usuario aqui
         }
 
         [Authorize]
-        [HttpGet("{username}")]//TODO proteger
-        public string GetByUsername(string username)
+        [HttpGet("{username}")]//proteger
+        public IActionResult GetByUsername(string username)//TODO User o dto de saida do usuario aqui
         {
-            return _service.GetByUsername(username).ToString() ?? throw new IdNaoEncontradoException(0);
-        }
+            return Ok(_service.GetByUsername(username) ?? throw new UsuarioNaoEncontrado(username));
+        }//
 
         [Authorize]
-        [HttpDelete("{id}")]//TODO proteger
+        [HttpDelete("{id}")]//proteger
         public void DeleteById(int id)
         {
             _service.Delete(id);

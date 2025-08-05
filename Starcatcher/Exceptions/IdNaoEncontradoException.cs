@@ -1,7 +1,8 @@
 namespace Starcatcher.Exceptions
 {
-    public class IdNaoEncontradoException : Exception
+    public class UsuarioNaoEncontrado : Exception
     {
-        public IdNaoEncontradoException(int id) : base("O id: " + id + " não está disponível"){}
+        public UsuarioNaoEncontrado(int id) : base("O id: " + id + " não foi encontrado!"){}
+        public UsuarioNaoEncontrado(string username) : base("O username: " + username + " não foi encontrado!"){}
     }
 }

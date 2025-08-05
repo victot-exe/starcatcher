@@ -4,10 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Starcatcher.DTOs
-{
-    public record UserDTOUpdate(
-        string Username,
-        string Password
+{//TODO Colocar os dados que podem ser alterados 
+    public record GrupoConsorcioUpdateDto(
+
     )
     {
         

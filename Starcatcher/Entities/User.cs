@@ -17,11 +17,6 @@ namespace Starcatcher.Entities
         public string Password { get; set; } = "";
 
         [InverseProperty("User")]
-        public List<Cota> Cotas { get; set; } = new();
-        public User(UserDTOUpdate dto)
-        {
-            Username = dto.Username;
-            Password = dto.Password;
-        }
+        public List<Cota> Cotas { get; set; } = [];
     }
 }

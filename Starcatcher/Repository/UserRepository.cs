@@ -1,3 +1,4 @@
+using Microsoft.IdentityModel.Tokens;
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.Entities.Context;
@@ -5,7 +6,7 @@ using Starcatcher.Exceptions;
 
 namespace Starcatcher.Repository
 {
-    public class UserRepository : IRepositoryUser<User, int, Cota>
+    public class UserRepository : IRepositoryUser
     {
         private readonly ApplicationDbContext _context;
 
@@ -13,24 +14,17 @@ namespace Starcatcher.Repository
         {
             _context = context;
         }
-        public User Create(User obj)
+        public User Create(User user)
         {
-            try
-            {
-                _context.Users.Add(obj);
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw new GenericException(ex.Message);
-            }
+            _context.Users.Add(user);
+            _context.SaveChanges();
 
-            return obj;
+            return user;
         }
 
         public void Delete(int id)
         {
-            var entitie = _context.Users.Find(id) ?? throw new IdNaoEncontradoException(id);
+            var entitie = _context.Users.Find(id) ?? throw new UsuarioNaoEncontrado(id);
             _context.Users.Remove(entitie);
             _context.SaveChanges();
         }
@@ -44,14 +38,17 @@ namespace Starcatcher.Repository
         {
             return _context.Users
                     .SingleOrDefault(u => u.Username == username)
-                        ?? throw new IdNaoEncontradoException(0);
+                        ?? throw new UsuarioNaoEncontrado(0);
         }
 
-        public User Update(int id, User obj)
+        public User Update(int id, User user)
         {
-            var entity = _context.Users.Find(id) ?? throw new IdNaoEncontradoException(id);
-            entity.Username = obj.Username;
-            entity.Password = obj.Password;
+            var entity = _context.Users.Find(id) ?? throw new UsuarioNaoEncontrado(id);
+            if (!user.Username.IsNullOrEmpty())
+                entity.Username = user.Username;
+
+            if (!user.Password.IsNullOrEmpty())
+                entity.Password = user.Password;
 
             _context.SaveChanges();
 
@@ -60,7 +57,7 @@ namespace Starcatcher.Repository
 
         public User AdicionarCota(int id, Cota cota)
         {
-            var entity = _context.Users.Find(id) ?? throw new IdNaoEncontradoException(id);
+            var entity = _context.Users.Find(id) ?? throw new UsuarioNaoEncontrado(id);
             entity.Cotas.Add(cota);
             _context.SaveChanges();
             return entity;
@@ -68,7 +65,7 @@ namespace Starcatcher.Repository
 
         public User GetById(int id)
         {
-            return _context.Users.Find(id) ?? throw new IdNaoEncontradoException(id);
+            return _context.Users.Find(id) ?? throw new UsuarioNaoEncontrado(id);
         }
     }
 }

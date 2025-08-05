@@ -24,19 +24,22 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
 //Cotas
-builder.Services.AddScoped<IRepositoryCota<Cota, int>, CotaRepository>();
-builder.Services.AddScoped<IService<CotaDTOExit, int, int, CotaDTOUpdate>, CotaService>();
+builder.Services.AddScoped<IRepositoryCota, CotaRepository>();
+builder.Services.AddScoped<IServiceCota, CotaService>();
 //Grupos
-builder.Services.AddScoped<IRepositoryGrupo<GrupoConsorcio, int, Cota>, GrupoConsorcioRepository>();
-builder.Services.AddScoped<IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio>, GrupoConsorcioService>();
+builder.Services.AddScoped<IRepositoryGrupo, GrupoConsorcioRepository>();
+builder.Services.AddScoped<IServiceGrupo, GrupoConsorcioService>();//TODO arrumar
 //validadores
 builder.Services.AddScoped<ValidationExecutor>();
 //Users
-builder.Services.AddScoped<IRepositoryUser<User, int, Cota>, UserRepository>();
-builder.Services.AddScoped<IServiceUser<User, UserDTOEntry, UserDTOUpdate>, UserService>();
+builder.Services.AddScoped<IRepositoryUser, UserRepository>();
+builder.Services.AddScoped<IServiceUser, UserService>();
 //Hash de senha para o db
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+//Service para pegar o usuario autenticado e passar o id para a inclusão na cota
+builder.Services.AddHttpContextAccessor();
 
 //TODO autentication mas só depois de acabar tudo
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)//Configurando o que será necessário para a configuração do token

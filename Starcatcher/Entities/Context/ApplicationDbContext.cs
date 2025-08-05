@@ -21,6 +21,7 @@ namespace Starcatcher.Entities.Context
             .WithMany(u => u.Cotas)
             .HasForeignKey(c => c.UserId)
             .IsRequired(false);
+            //TODO colcocar as outras restrições para o banco
         }
     }
 }

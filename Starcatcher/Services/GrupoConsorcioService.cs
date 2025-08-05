@@ -5,21 +5,21 @@ using Starcatcher.Factories;
 
 namespace Starcatcher.Services
 {
-    public class GrupoConsorcioService : IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcioDTOEntry>
+    public class GrupoConsorcioService : IServiceGrupo
     {
-        private readonly IRepositoryGrupo<GrupoConsorcio, int, Cota> _repository;
+        private readonly IRepositoryGrupo _repository;
 
-        public GrupoConsorcioService(IRepositoryGrupo<GrupoConsorcio, int, Cota> repository)
+        public GrupoConsorcioService(IRepositoryGrupo repository)
         {
             _repository = repository;
         }
 
-        public GrupoConsorcio Create(GrupoConsorcioDTOEntry obj)
+        public GrupoConsorcioExitDto Create(GrupoConsorcioCreateDto cotaCreate)
         {
             //TODO validar os dados enviados
-            GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(obj));
-            _repository.UpdateList(result.Id, GrupoConsorcioFactory.GerarCotas(result));
-            return result;
+            GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(cotaCreate));
+            _repository.UpdateList(result.Id, GrupoConsorcioFactory.GerarCotas(result.Id, cotaCreate));
+            return new();//TODO arrumar a saida correta
         }
 
         public void Delete(int id)
@@ -27,27 +27,21 @@ namespace Starcatcher.Services
             _repository.Delete(id);
         }
 
-        public List<GrupoConsorcio> GetAll()
+        public List<GrupoConsorcioExitDto> GetAll()
         {
-            return [.._repository.GetAll()];
+            return [.. _repository.GetAll().Select(c=> new GrupoConsorcioExitDto(c))];
         }
 
-        public GrupoConsorcio GetById(int id)
+        public GrupoConsorcioExitDto GetById(int id)
         {
-            return _repository.GetById(id);
+            var entity = _repository.GetById(id);
+            return new(entity);
         }
 
-        public GrupoConsorcio Update(int id, GrupoConsorcioDTOEntry obj)
+        public GrupoConsorcioExitDto Update(int id, GrupoConsorcioUpdateDto grupo)
         {
-            GrupoConsorcio grupo = new(
-                obj.Nome,
-                obj.ValorFinalPorCota * obj.QuantidadeDeCotas,
-                obj.TaxaDeAdministracao,
-                obj.QuantidadeDeCotas,
-                obj.ValorFinalPorCota * (1 + obj.TaxaDeAdministracao / 100),
-                obj.ParcelasPorCota
-            );
-            return _repository.Update(id, grupo);
+            GrupoConsorcio grupoUp = new();//TODO arrumar a classe do DTOUpdate
+            return new(_repository.Update(id, grupoUp));
         }
     }
 }
