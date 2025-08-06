@@ -51,7 +51,7 @@ namespace Starcatcher.Repository
         public Dictionary<GrupoConsorcio, bool> Update(int id, GrupoConsorcio grupo)
         {
             var entity = _context.Grupos.Find(id) ?? throw new UsuarioNaoEncontrado(id);
-            //TODO logica para atualizar apenas os que não vierem null
+            //logica para atualizar apenas os que não vierem null
             bool alterouValor = false;
 
             if (!grupo.NomeDoGrupo.IsNullOrEmpty())

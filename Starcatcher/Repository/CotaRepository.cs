@@ -30,6 +30,8 @@ namespace Starcatcher.Repository
         {
             var entity = _context.Cotas.Find(id) ?? throw new UsuarioNaoEncontrado(id);
             entity.Atribuida = false;//TODO mudar o usuario id para null
+            entity.UserId = null;
+            entity.User = null;
             _context.SaveChanges();
         }
 

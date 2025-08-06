@@ -2,6 +2,7 @@ using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.DTOs;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Starcatcher.Services
 {
@@ -45,7 +46,9 @@ namespace Starcatcher.Services
 
         public UserExitDto Update(int id, UserEntryDto user)
         {
-            User entity = new(user.Username, user.Password);//TODO verificar aqui qual esta vazio e qual não está para não ter null pointer exception
+            
+            User entity = new(user.Username, user.Password);
+            
             entity.Password = _passwordHasher.HashPassword(entity, entity.Password);
 
             return new(_repository.Update(id, entity));

@@ -3,7 +3,7 @@ using Starcatcher.Entities;
 
 namespace Starcatcher.Services
 {
-    public class AuthService//TODO talvez usar
+    public class AuthService//talvez usar
     {
         private readonly IRepositoryUser _repository;
 
