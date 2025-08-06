@@ -17,7 +17,7 @@ namespace Starcatcher.Services
         public GrupoConsorcioExitDto Create(GrupoConsorcioCreateDto grupoCreate)
         {
             //TODO validar os dados enviados
-            GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(grupoCreate));
+            GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(grupoCreate));//Ta criando um usuario por cota
             _repository.AddListaDeCotas(result.Id, GrupoConsorcioFactory.GerarCotas(result.Id, grupoCreate));
             return new(result);
         }

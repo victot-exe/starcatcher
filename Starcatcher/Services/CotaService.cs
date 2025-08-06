@@ -26,14 +26,14 @@ namespace Starcatcher.Services
         {
 
             // _validations.ExecuteAll(obj);//TODO definir as validações
-            //TODO pegar o Id do usuario
+            // pegar o Id do usuario
             var user = _httpContextAccessor.HttpContext?.User;
-            var claimUserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var claimUserId = user?.FindFirst("userId")?.Value;
             
             if (int.TryParse(claimUserId, out int userId))
             {
 
-                Cota created = _repository.Create(grupoId, userId);//TODO passar o user Id para adicionar ao usuario a lista
+                Cota created = _repository.Create(grupoId, userId);//passar o user Id para adicionar ao usuario a lista
 
                 return new CotaDTOExit(created);
             }

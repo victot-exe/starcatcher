@@ -29,7 +29,7 @@ namespace Starcatcher.Repository
         public void Delete(int id)
         {
             var entity = _context.Cotas.Find(id) ?? throw new UsuarioNaoEncontrado(id);
-            entity.Atribuida = false;
+            entity.Atribuida = false;//TODO mudar o usuario id para null
             _context.SaveChanges();
         }
 

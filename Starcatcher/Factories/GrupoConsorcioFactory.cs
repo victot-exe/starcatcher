@@ -47,9 +47,9 @@ namespace Starcatcher.Factories
                 if (cotas.Count == grupo.QuantidadeDeCotas)
                     break;
                 //gerar numero "aleatorio" pra string do numero da Cota
-                numeroCota = $"{numeroCota}{controle:D5}";
+                string numeroCotaAtual = $"{numeroCota}{controle:D5}";
                 cotas.Add(CotaFactory.GerarCota(
-                                numeroCota,
+                                numeroCotaAtual,
                                 grupoId, grupo.ValorFinalPorCota,//Valor da carta de credito
                                 grupo.TaxaDeAdministracao,
                                 grupo.ParcelasPorCota));

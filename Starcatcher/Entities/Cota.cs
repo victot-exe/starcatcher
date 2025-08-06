@@ -49,9 +49,9 @@ namespace Starcatcher.Entities
         public bool? Atribuida { get; set; }
         public int? QteParcelas { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [JsonIgnore]
-        public User User { get; set; } = new();
+        public User? User { get; set; }
 
         public decimal? ValorTotal => QteParcelas * ValorParcela;
     }

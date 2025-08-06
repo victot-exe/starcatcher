@@ -45,7 +45,7 @@ namespace Starcatcher.Controllers
             var claims = new[]{
                 new Claim(JwtRegisteredClaimNames.Sub, user.Username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim("userId", user.Id.ToString())
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));//aqui
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
