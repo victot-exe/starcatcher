@@ -16,21 +16,21 @@ namespace Starcatcher.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private readonly IServiceUser<User, UserEntryDto, UserDTOUpdate> _service;
+        private readonly IRepositoryUser _repository;
 
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public AuthController(IConfiguration configuration, IServiceUser<User, UserEntryDto, UserDTOUpdate> service, IPasswordHasher<User> passwordHasher)
+        public AuthController(IConfiguration configuration, IRepositoryUser repository, IPasswordHasher<User> passwordHasher)
         {
             _configuration = configuration;
-            _service = service;
+            _repository = repository;
             _passwordHasher = passwordHasher;
         }
 
         [HttpPost("login")]//não proteger
         public IActionResult Login([FromBody] LoginDTOEntry user)
         {
-            var entity = _service.GetByUsername(user.Username) ?? throw new UsuarioNaoEncontradoException();
+            var entity = _repository.GetByUsername(user.Username) ?? throw new UsuarioNaoEncontradoException();
             var result = _passwordHasher.VerifyHashedPassword(entity, entity.Password, user.Password);
             if (result == PasswordVerificationResult.Success)
             {
