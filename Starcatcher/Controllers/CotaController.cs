@@ -7,7 +7,7 @@ namespace Starcatcher.Controllers
 {
     [ApiController]
     [Route("cotas")]
-    public class CotaController : ControllerBase//testar os retornos para IActionResult
+    public class CotaController : ControllerBase
     {
         private readonly IServiceCota _service;
 
@@ -26,7 +26,7 @@ namespace Starcatcher.Controllers
         [HttpPost("{id}")]
         public IActionResult Post(int id)
         {
-            //USando a reflection aqui
+            //TODO usar a reflection aqui
 
             CotaDTOExit result = _service.Create(id);
 
@@ -34,21 +34,21 @@ namespace Starcatcher.Controllers
         }
 
         [Authorize]
-        [HttpGet]//proteger
+        [HttpGet]
         public IActionResult GetAllCotas()
         {
             return Ok(_service.GetAll());
         }
 
         [Authorize]
-        [HttpGet("{id}")]//proteger
+        [HttpGet("{id}")]
         public IActionResult GetCotaById(int id)
         {
             return Ok(_service.GetById(id));
         }
 
         [Authorize]
-        [HttpPut("{id}")]//proteger
+        [HttpPut("{id}")]
         public IActionResult UpdateCota(int id,[FromBody] CotaUpdateDto cotaNew)
         {
             _service.Update(id, cotaNew);
@@ -56,7 +56,7 @@ namespace Starcatcher.Controllers
         }
 
         [Authorize]
-        [HttpDelete("{id}")]//proteger
+        [HttpDelete("{id}")]
         public IActionResult DeleteCota(int id)
         {
             _service.Delete(id);

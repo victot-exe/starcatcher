@@ -3,7 +3,7 @@ using Starcatcher.Entities;
 
 namespace Starcatcher.DTOs
 {
-    public record CotaUpdateDto(//Talvez mudar para apenas o valor pago
+    public record CotaUpdateDto(//TODO talvez mudar para um que altere apenas o valor pago
         decimal? ValorParcela,
         decimal? ValorDaCartaDeCredito,
         int? QteParcelas,

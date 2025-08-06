@@ -8,7 +8,7 @@ namespace Starcatcher.Entities
         public List<Cota> Cotas { get; set; } = [];
         public int? QuantidadeDeCotas { get; set; }
         public decimal? TaxaAdministrativa { get; set; }
-        public decimal? ValorTaxaAdministrativa { get; set; }//calcular no momento da criação do objeto na factory
+        public decimal? ValorTaxaAdministrativa { get; set; }
         public GrupoConsorcio(string grupo, decimal valorTotalDoGrupoSemTaxa, decimal taxa, int totaldeCotas, decimal valorTaxaAdministrativa)
         {
             NomeDoGrupo = grupo;

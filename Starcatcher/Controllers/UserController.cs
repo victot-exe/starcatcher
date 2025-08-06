@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Starcatcher.Contracts;
-using Starcatcher.Entities;
 using Starcatcher.DTOs;
-using Starcatcher.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Starcatcher.Controllers
@@ -18,7 +16,7 @@ namespace Starcatcher.Controllers
             _service = service;
         }
 
-        [HttpPost("novo-usuario")]//não proteger
+        [HttpPost("novo-usuario")]
         public IActionResult Create([FromBody] UserEntryDto user)
         {
             UserExitDto userCriado = _service.Create(user);
@@ -26,7 +24,7 @@ namespace Starcatcher.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}")]//proteger
+        [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UserEntryDto user)
         {
             var entity = _service.Update(id, user);
@@ -35,21 +33,21 @@ namespace Starcatcher.Controllers
         }
 
         [Authorize]
-        [HttpGet]//proteger
+        [HttpGet]
         public IActionResult GetAll()
         {
             return Ok(_service.GetAll());
         }
 
         [Authorize]
-        [HttpGet("{username}")]//proteger
+        [HttpGet("{username}")]
         public IActionResult GetByUsername(string username)
         {
             return Ok(_service.GetByUsername(username));
         }//
 
         [Authorize]
-        [HttpDelete("{id}")]//proteger
+        [HttpDelete("{id}")]
         public void DeleteById(int id)
         {
             _service.Delete(id);

@@ -24,7 +24,7 @@ namespace Starcatcher.Repository
 
         public void Delete(int id)
         {
-            var entitie = _context.Users.Find(id) ?? throw new UsuarioNaoEncontrado(id);
+            var entitie = _context.Users.Find(id) ?? throw new RecursoNaoEncontradoException(id);
             _context.Users.Remove(entitie);
             _context.SaveChanges();
         }
@@ -38,12 +38,12 @@ namespace Starcatcher.Repository
         {
             return _context.Users
                     .SingleOrDefault(u => u.Username == username)
-                        ?? throw new UsuarioNaoEncontrado(username);
+                        ?? throw new RecursoNaoEncontradoException(username);
         }
 
         public User Update(int id, User user)
         {
-            var entity = _context.Users.Find(id) ?? throw new UsuarioNaoEncontrado(id);
+            var entity = _context.Users.Find(id) ?? throw new RecursoNaoEncontradoException(id);
             if (!user.Username.IsNullOrEmpty())
                 entity.Username = user.Username;
 
@@ -57,7 +57,7 @@ namespace Starcatcher.Repository
 
         public User AdicionarCota(int id, Cota cota)
         {
-            var entity = _context.Users.Find(id) ?? throw new UsuarioNaoEncontrado(id);
+            var entity = _context.Users.Find(id) ?? throw new RecursoNaoEncontradoException(id);
             entity.Cotas.Add(cota);
             _context.SaveChanges();
             return entity;
@@ -65,7 +65,7 @@ namespace Starcatcher.Repository
 
         public User GetById(int id)
         {
-            return _context.Users.Find(id) ?? throw new UsuarioNaoEncontrado(id);
+            return _context.Users.Find(id) ?? throw new RecursoNaoEncontradoException(id);
         }
     }
 }

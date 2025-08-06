@@ -41,16 +41,16 @@ namespace Starcatcher.Factories
         {
             List<Cota> cotas = [];
             int controle = 1;
-            string numeroCota = $"G{grupoId}C";//definido um prefixo igual para todas e ir mudando dentro do loop
+            string numeroCota = $"G{grupoId:D4}C";
             while (true)
             {
                 if (cotas.Count == grupo.QuantidadeDeCotas)
                     break;
-                //gerar numero "aleatorio" pra string do numero da Cota
+                
                 string numeroCotaAtual = $"{numeroCota}{controle:D5}";
                 cotas.Add(CotaFactory.GerarCota(
                                 numeroCotaAtual,
-                                grupoId, grupo.ValorFinalPorCota,//Valor da carta de credito
+                                grupoId, grupo.ValorFinalPorCota,
                                 grupo.TaxaDeAdministracao,
                                 grupo.ParcelasPorCota));
                 controle++;

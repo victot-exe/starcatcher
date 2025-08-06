@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Starcatcher.Contracts;
@@ -32,7 +33,7 @@ namespace Starcatcher.Repository
 
         public void Delete(int id)
         {
-            var entitie = _context.Grupos.Find(id) ?? throw new UsuarioNaoEncontrado(id);
+            var entitie = _context.Grupos.Find(id) ?? throw new RecursoNaoEncontradoException(id);
             _context.Grupos.Remove(entitie);
             _context.SaveChanges();
         }
@@ -45,13 +46,13 @@ namespace Starcatcher.Repository
         public GrupoConsorcio GetById(int id)
         {
             return _context.Grupos.Find(id)
-                        ?? throw new UsuarioNaoEncontrado(id);
+                        ?? throw new RecursoNaoEncontradoException(id);
         }
 
         public Dictionary<GrupoConsorcio, bool> Update(int id, GrupoConsorcio grupo)
         {
-            var entity = _context.Grupos.Find(id) ?? throw new UsuarioNaoEncontrado(id);
-            //logica para atualizar apenas os que não vierem null
+            var entity = _context.Grupos.Find(id) ?? throw new RecursoNaoEncontradoException(id);
+
             bool alterouValor = false;
 
             if (!grupo.NomeDoGrupo.IsNullOrEmpty())
@@ -82,15 +83,17 @@ namespace Starcatcher.Repository
 
             _context.SaveChanges();
 
-            var retorno = new Dictionary<GrupoConsorcio, bool>();
-            retorno[entity] = alterouValor;
+            var retorno = new Dictionary<GrupoConsorcio, bool>
+            {
+                [entity] = alterouValor
+            };
 
             return retorno;
         }
 
         public GrupoConsorcio UpdateListaDeCotas(int id, List<Cota> cotas)
         {
-            var entity = _context.Grupos.Find(id) ?? throw new UsuarioNaoEncontrado(id);
+            var entity = _context.Grupos.Include(g => g.Cotas).FirstOrDefault(g => g.Id ==id) ?? throw new RecursoNaoEncontradoException(id);
             entity.Cotas.ForEach(
                 c =>
                 {
@@ -99,10 +102,8 @@ namespace Starcatcher.Repository
                     );
                     c.DataDeAtribuicao = cotaUp.DataDeAtribuicao;
                     c.QteParcelas = cotaUp.QteParcelas;
-                    c.ValorDaCartaDeCredito = cotaUp.QteParcelas;
-                    c.ValorParcela = cotaUp.ValorParcela;
                     c.ValorDaCartaDeCredito = cotaUp.ValorDaCartaDeCredito;
-                    //Valor total é calculada na hora, então não necessita ser atualizada
+                    c.ValorParcela = cotaUp.ValorParcela;
                 });
             _context.SaveChanges();
             return entity;
@@ -110,7 +111,7 @@ namespace Starcatcher.Repository
 
         public GrupoConsorcio AddListaDeCotas(int id, List<Cota> cotas)
         {
-            var entity = _context.Grupos.Find(id) ?? throw new UsuarioNaoEncontrado(id);
+            var entity = _context.Grupos.Find(id) ?? throw new RecursoNaoEncontradoException(id);
             entity.Cotas = cotas;
 
             _context.SaveChanges();

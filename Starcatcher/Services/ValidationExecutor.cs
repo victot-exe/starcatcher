@@ -5,7 +5,7 @@ namespace Starcatcher.Services
 {
     public class ValidationExecutor
     {
-        public void ExecuteAll<T>(T obj)
+        public void ExecuteAll<T>(T obj)//TODO usar para validar varias coisas pendentes
         {
             var validationTypes = Assembly.GetExecutingAssembly()
                 .GetTypes()
@@ -13,7 +13,7 @@ namespace Starcatcher.Services
 
             foreach (var type in validationTypes)
             {
-                var validator = (IValidation<T>)Activator.CreateInstance(type)!;//A exclamação é para garantir que não vai retornar null
+                var validator = (IValidation<T>)Activator.CreateInstance(type)!;
                 validator.Valid(obj);
             }
         }

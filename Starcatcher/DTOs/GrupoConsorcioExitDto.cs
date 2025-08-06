@@ -14,7 +14,7 @@ namespace Starcatcher.DTOs
         decimal? ValorTaxaAdministrativa,
         int? QuantidadeDeCotas
     )
-    {//TODO colocar os atributos e arrumar o construtor
+    {
         public GrupoConsorcioExitDto(GrupoConsorcio grupo) : this(grupo.Id, grupo.NomeDoGrupo, grupo.ValorTotalDoGrupoSemTaxa, grupo.TaxaAdministrativa, grupo.ValorTaxaAdministrativa, grupo.QuantidadeDeCotas){}
     }
 }

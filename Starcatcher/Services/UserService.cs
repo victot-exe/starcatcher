@@ -21,7 +21,7 @@ namespace Starcatcher.Services
 
         public UserExitDto Create(UserEntryDto userDto)
         {
-            User user = new(userDto.Username, userDto.Password);//logica para fazer o hash da senha no db
+            User user = new(userDto.Username, userDto.Password);
             user.Password = _passwordHasher.HashPassword(user, user.Password);
             _repository.Create(user);
 

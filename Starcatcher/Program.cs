@@ -15,33 +15,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//Adicionando os controllers
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-//Cotas
 builder.Services.AddScoped<IRepositoryCota, CotaRepository>();
 builder.Services.AddScoped<IServiceCota, CotaService>();
-//Grupos
+
 builder.Services.AddScoped<IRepositoryGrupo, GrupoConsorcioRepository>();
 builder.Services.AddScoped<IServiceGrupo, GrupoConsorcioService>();
-//validadores
+
 builder.Services.AddScoped<ValidationExecutor>();
-//Users
+
 builder.Services.AddScoped<IRepositoryUser, UserRepository>();
 builder.Services.AddScoped<IServiceUser, UserService>();
-//Hash de senha para o db
+
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-//Service para pegar o usuario autenticado e passar o id para a inclusão na cota
+
 builder.Services.AddHttpContextAccessor();
 
-//TODO autentication mas só depois de acabar tudo
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)//Configurando o que será necessário para a configuração do token
     .AddJwtBearer(options =>
         {
@@ -57,6 +52,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)//Conf
 
 builder.Services.AddAuthorization();
 
+//TODO remover o swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "StarcatcherAPI", Version = "v1" });
@@ -88,16 +84,14 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(securityRequirement);
 });
 
-
-
 var app = builder.Build();
-//Redireciona da raiz para o swagger
+
 app.MapGet("/", context =>
 {
     context.Response.Redirect("/swagger");
     return Task.CompletedTask;
 });
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -105,12 +99,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.UseMiddleware<ExceptionMiddleware>();//aqui eu injeto o middleware que é responsável por automatizar o tratamento das exceções
+app.UseMiddleware<ExceptionMiddleware>();
 
-//adicionando o uso de autenticação
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();//<= aqui eu mapeio os controllers com [ApiController]
+app.MapControllers();
 
 app.Run();

@@ -22,7 +22,7 @@ namespace Starcatcher.Controllers
         }
 
         [Authorize]
-        [HttpPost]//proteger
+        [HttpPost]
         public IActionResult Create(GrupoConsorcioCreateDto grupo)
         {
             GrupoConsorcioExitDto result = _service.Create(grupo);
@@ -30,21 +30,21 @@ namespace Starcatcher.Controllers
         }
 
         [Authorize]
-        [HttpGet]//proteger
+        [HttpGet]
         public IActionResult GetAll()
         {
             return Ok(_service.GetAll());
         }
 
         [Authorize]
-        [HttpGet("{id}")]//proteger
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             return Ok(_service.GetById(id));
         }
 
         [Authorize]
-        [HttpPut("{id}")]//proteger
+        [HttpPut("{id}")]
         public IActionResult Update(int id,[FromBody] GrupoConsorcioCreateDto grupo)
         {
             var entity = _service.Update(id, grupo);
@@ -52,7 +52,7 @@ namespace Starcatcher.Controllers
         }
         
         [Authorize]
-        [HttpDelete("{id}")]//proteger
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             _service.Delete(id);

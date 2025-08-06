@@ -35,13 +35,13 @@ namespace Starcatcher.Entities
         }
 
         public int Id { get; set; }
-        public string? NumeroCota { get; set; }//um gerador do numero em factory
+        public string? NumeroCota { get; set; }
         public decimal? ValorParcela { get; set; }
         public decimal? TotalPago { get; set; }
 
         public DateOnly DataDeAtribuicao { get; set; }
 
-        public int GrupoConsorcioId { get; set; }//prop referente a FK
+        public int GrupoConsorcioId { get; set; }
         [JsonIgnore]
         public GrupoConsorcio GrupoConsorcio { get; set; } = null!;
 

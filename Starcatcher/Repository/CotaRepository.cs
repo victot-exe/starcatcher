@@ -16,8 +16,8 @@ namespace Starcatcher.Repository
         }
         public Cota Create(int obj, int userId)
         {
-            Cota result = _context.Cotas //query personalizada onde pega o primeiro da lista que está marcado como ativo
-                .FirstOrDefault(c => c.GrupoConsorcioId == obj && c.Atribuida != true) ?? throw new UsuarioNaoEncontrado(obj);
+            Cota result = _context.Cotas
+                .FirstOrDefault(c => c.GrupoConsorcioId == obj && c.Atribuida != true) ?? throw new RecursoNaoEncontradoException(obj);
             
             result.Atribuida = true;
             result.UserId = userId;
@@ -28,8 +28,8 @@ namespace Starcatcher.Repository
 
         public void Delete(int id)
         {
-            var entity = _context.Cotas.Find(id) ?? throw new UsuarioNaoEncontrado(id);
-            entity.Atribuida = false;//TODO mudar o usuario id para null
+            var entity = _context.Cotas.Find(id) ?? throw new RecursoNaoEncontradoException(id);
+            entity.Atribuida = false;
             entity.UserId = null;
             entity.User = null;
             _context.SaveChanges();
@@ -43,12 +43,12 @@ namespace Starcatcher.Repository
         public Cota GetById(int id)
         {
             return _context.Cotas.Find(id)
-                        ?? throw new UsuarioNaoEncontrado(id);
+                        ?? throw new RecursoNaoEncontradoException(id);
         }
 
         public Cota Update(int id, Cota cotaUpdate)
         {
-            var entity = _context.Cotas.Find(id) ?? throw new UsuarioNaoEncontrado(id);
+            var entity = _context.Cotas.Find(id) ?? throw new RecursoNaoEncontradoException(id);
 
             if (cotaUpdate.ValorParcela.HasValue)
                 entity.ValorParcela = cotaUpdate.ValorParcela;
