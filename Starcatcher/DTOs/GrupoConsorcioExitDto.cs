@@ -9,10 +9,10 @@ namespace Starcatcher.DTOs
     public record GrupoConsorcioExitDto(
         int Id,
         string NomeDoGrupo,
-        decimal ValorTotalDoGrupo,
-        decimal TaxaAdministrativa,
-        decimal ValorTaxaAdministrativa,
-        int QuantidadeDeCotas
+        decimal? ValorTotalDoGrupo,
+        decimal? TaxaAdministrativa,
+        decimal? ValorTaxaAdministrativa,
+        int? QuantidadeDeCotas
     )
     {//TODO colocar os atributos e arrumar o construtor
         public GrupoConsorcioExitDto(GrupoConsorcio grupo) : this(grupo.Id, grupo.NomeDoGrupo, grupo.ValorTotalDoGrupoSemTaxa, grupo.TaxaAdministrativa, grupo.ValorTaxaAdministrativa, grupo.QuantidadeDeCotas){}

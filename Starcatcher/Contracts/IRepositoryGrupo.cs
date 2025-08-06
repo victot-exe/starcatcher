@@ -14,10 +14,12 @@ namespace Starcatcher.Contracts
 
         public GrupoConsorcio GetById(int id);
 
-        public GrupoConsorcio Update(int id, GrupoConsorcio grupo);
+        public Dictionary<GrupoConsorcio, bool> Update(int id, GrupoConsorcio grupo);
 
         public void Delete(int id);
 
-        public GrupoConsorcio UpdateList(int id, List<Cota> list);
+        public GrupoConsorcio AddListaDeCotas(int id, List<Cota> list);
+
+        public GrupoConsorcio UpdateListaDeCotas(int id, List<Cota> cotas);
     }
 }
