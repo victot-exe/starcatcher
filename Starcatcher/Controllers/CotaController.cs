@@ -9,9 +9,9 @@ namespace Starcatcher.Controllers
     [Route("cotas")]
     public class CotaController : ControllerBase//testar os retornos para IActionResult
     {
-        private readonly IService<CotaDTOExit, int, int, CotaUpdateDto> _service;
+        private readonly IServiceCota _service;
 
-        public CotaController(IService<CotaDTOExit, int, int, CotaUpdateDto> service)
+        public CotaController(IServiceCota service)
         {
             _service = service;
         }

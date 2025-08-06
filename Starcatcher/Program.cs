@@ -3,13 +3,13 @@ using Starcatcher.Contracts;
 using Starcatcher.Entities.Context;
 using Starcatcher.Entities;
 using Starcatcher.Repository;
-using Starcatcher.DTOs;
 using Starcatcher.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
+using Starcatcher.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +30,7 @@ builder.Services.AddScoped<IRepositoryCota, CotaRepository>();
 builder.Services.AddScoped<IServiceCota, CotaService>();
 //Grupos
 builder.Services.AddScoped<IRepositoryGrupo, GrupoConsorcioRepository>();
-builder.Services.AddScoped<IServiceGrupo, GrupoConsorcioService>();//TODO arrumar
+builder.Services.AddScoped<IServiceGrupo, GrupoConsorcioService>();
 //validadores
 builder.Services.AddScoped<ValidationExecutor>();
 //Users
@@ -105,7 +105,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.UseMiddleware<ExceptionMiddleware>();//aqui eu injeto o middleware que é responsável por automatizar o tratamento das exceções
+app.UseMiddleware<ExceptionMiddleware>();//aqui eu injeto o middleware que é responsável por automatizar o tratamento das exceções
 
 //adicionando o uso de autenticação
 app.UseAuthentication();
