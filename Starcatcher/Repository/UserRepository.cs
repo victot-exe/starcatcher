@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
@@ -31,7 +32,7 @@ namespace Starcatcher.Repository
 
         public List<User> GetAll()
         {
-            return [.. _context.Users];
+            return [.. _context.Users.Include(u => u.Cotas)];
         }
 
         public User GetByUsername(string username)
@@ -44,10 +45,10 @@ namespace Starcatcher.Repository
         public User Update(int id, User user)
         {
             var entity = _context.Users.Find(id) ?? throw new RecursoNaoEncontradoException(id);
-            if (!user.Username.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(user.Username))
                 entity.Username = user.Username;
 
-            if (!user.Password.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(user.Password))
                 entity.Password = user.Password;
 
             _context.SaveChanges();

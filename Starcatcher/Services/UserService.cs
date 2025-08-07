@@ -9,18 +9,21 @@ namespace Starcatcher.Services
     public class UserService : IServiceUser
     {
         private readonly IRepositoryUser _repository;
-
+        private readonly ValidationExecutor _validations;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(IRepositoryUser repository, IPasswordHasher<User> passwordHasher)
+        public UserService(IRepositoryUser repository, IPasswordHasher<User> passwordHasher, ValidationExecutor validations)
         {
             _repository = repository;
+            _validations = validations;
             _passwordHasher = passwordHasher;
         }
 
 
         public UserExitDto Create(UserEntryDto userDto)
         {
+            //TODO validacoes
+            _validations.ExecuteAll(userDto);
             User user = new(userDto.Username, userDto.Password);
             user.Password = _passwordHasher.HashPassword(user, user.Password);
             _repository.Create(user);

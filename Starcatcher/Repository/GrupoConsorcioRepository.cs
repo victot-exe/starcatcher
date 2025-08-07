@@ -95,7 +95,7 @@ namespace Starcatcher.Repository
         {
             var entity = _context.Grupos.Include(g => g.Cotas).FirstOrDefault(g => g.Id ==id) ?? throw new RecursoNaoEncontradoException(id);
             if (entity.Cotas.Count != cotas.Count)
-                throw new NotValidException("O numero de cotas por grupo não pode ser alterado.");
+                throw new NotValidException($"O numero de cotas por grupo não pode ser alterado.\nO numero deve ser: {cotas.Count}");
             
             entity.Cotas.ForEach(
                 c =>

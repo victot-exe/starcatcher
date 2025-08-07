@@ -33,7 +33,7 @@ namespace Starcatcher.Services
             if (retorno.First().Value)
                 _repository.UpdateListaDeCotas(id, GrupoConsorcioFactory.GerarCotas(id, grupo));
 
-            return new(grupoUp);
+            return new(retorno.First().Key);
         }
 
         public void Delete(int id)
