@@ -43,7 +43,6 @@ namespace Starcatcher.Entities
         public int? UserId { get; set; }
         [JsonIgnore]
         public User? User { get; set; }
-
         public decimal? ValorTotal => QteParcelas * ValorParcela;
     }
 }

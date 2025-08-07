@@ -9,14 +9,18 @@ namespace Starcatcher.Services
     {
         private readonly IRepositoryGrupo _repository;
 
-        public GrupoConsorcioService(IRepositoryGrupo repository)
+        private readonly ValidationExecutor _validations;
+
+        public GrupoConsorcioService(IRepositoryGrupo repository, ValidationExecutor validations)
         {
             _repository = repository;
+            _validations = validations;
         }
 
         public GrupoConsorcioExitDto Create(GrupoConsorcioCreateDto grupoCreate)
         {
             //TODO validar os dados enviados
+            _validations.ExecuteAll(grupoCreate);
             GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(grupoCreate));
             _repository.AddListaDeCotas(result.Id, GrupoConsorcioFactory.GerarCotas(result.Id, grupoCreate));
             return new(result);
