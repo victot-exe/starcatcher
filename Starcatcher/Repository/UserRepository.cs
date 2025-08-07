@@ -37,7 +37,7 @@ namespace Starcatcher.Repository
 
         public User GetByUsername(string username)
         {
-            return _context.Users
+            return _context.Users.Include(u=> u.Cotas)
                     .SingleOrDefault(u => u.Username == username)
                         ?? throw new RecursoNaoEncontradoException(username);
         }

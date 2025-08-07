@@ -2,7 +2,6 @@ using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.DTOs;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Starcatcher.Services
 {
@@ -22,7 +21,6 @@ namespace Starcatcher.Services
 
         public UserExitDto Create(UserEntryDto userDto)
         {
-            //TODO validacoes
             _validations.ExecuteAll(userDto);
             User user = new(userDto.Username, userDto.Password);
             user.Password = _passwordHasher.HashPassword(user, user.Password);

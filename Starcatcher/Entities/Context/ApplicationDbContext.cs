@@ -20,7 +20,9 @@ namespace Starcatcher.Entities.Context
             .HasOne(c => c.User)
             .WithMany(u => u.Cotas)
             .HasForeignKey(c => c.UserId)
-            .IsRequired(false);
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
+            
             //TODO colcocar as outras restrições para o banco
         }
     }
