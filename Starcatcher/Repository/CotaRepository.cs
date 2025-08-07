@@ -46,25 +46,16 @@ namespace Starcatcher.Repository
                         ?? throw new RecursoNaoEncontradoException(id);
         }
 
-        public Cota Update(int id, Cota cotaUpdate)
+        public Cota Update(int id, decimal? pagamento)
         {
             var entity = _context.Cotas.Find(id) ?? throw new RecursoNaoEncontradoException(id);
 
-            if (cotaUpdate.ValorParcela.HasValue)
-                entity.ValorParcela = cotaUpdate.ValorParcela;
+#pragma warning disable CS8629 // Nullable value type may be null.
+            if (!(bool)entity.Atribuida)//não vai ser null pois é um valor que já é atribuido automaticamente no momento da criação da cota
+                throw new CotaNaoAtribuidaException($"A cota com o Id: {id} não está atribuida a nenhum usuario, portando o valor não pode ser mudado.");
+#pragma warning restore CS8629 // Nullable value type may be null.
 
-            if (cotaUpdate.ValorDaCartaDeCredito.HasValue)
-                entity.ValorDaCartaDeCredito = cotaUpdate.ValorDaCartaDeCredito;
-
-            if (cotaUpdate.QteParcelas.HasValue)
-                entity.QteParcelas = cotaUpdate.QteParcelas;
-
-            if (cotaUpdate.Atribuida.HasValue)
-                entity.Atribuida = cotaUpdate.Atribuida;
-
-            if (cotaUpdate.TotalPago.HasValue)
-                entity.TotalPago = cotaUpdate.TotalPago;
-
+            entity.TotalPago += pagamento;
             _context.SaveChanges();
             return entity;
         }

@@ -10,7 +10,7 @@ namespace Starcatcher.Contracts
 
         public Cota GetById(int Id);
 
-        public Cota Update(int id, Cota obj);
+        public Cota Update(int id, decimal? pagamento);
 
         public void Delete(int id);
     }

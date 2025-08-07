@@ -100,7 +100,9 @@ namespace Starcatcher.Repository
                     var cotaUp = cotas.FirstOrDefault(
                         co => co.NumeroCota == c.NumeroCota
                     );
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                     c.DataDeAtribuicao = cotaUp.DataDeAtribuicao;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                     c.QteParcelas = cotaUp.QteParcelas;
                     c.ValorDaCartaDeCredito = cotaUp.ValorDaCartaDeCredito;
                     c.ValorParcela = cotaUp.ValorParcela;

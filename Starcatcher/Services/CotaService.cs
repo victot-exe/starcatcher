@@ -26,7 +26,6 @@ namespace Starcatcher.Services
         {
 
             // _validations.ExecuteAll(obj);//TODO definir as validações
-            // pegar o Id do usuario
             var user = _httpContextAccessor.HttpContext?.User;
             var claimUserId = user?.FindFirst("userId")?.Value;
             
@@ -63,8 +62,7 @@ namespace Starcatcher.Services
         public CotaDTOExit Update(int id, CotaUpdateDto update)
         {
             //TODO regras de negocio usar reflections ou algo parecido
-            Cota cota = new(update);
-            return new(_repository.Update(id, cota));
+            return new(_repository.Update(id, update.Pagamento));
         }
     }
 }

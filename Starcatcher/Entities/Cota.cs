@@ -7,19 +7,10 @@ namespace Starcatcher.Entities
 
     public class Cota
     {
-        public Cota() { }
-        public Cota(CotaCreateDto cota, DateOnly date, GrupoConsorcio grupo)//TODO em service pegar o id do grupo e pegar um grupo existente ou criar um novo
-        {
-            DataDeAtribuicao = date;
-            GrupoConsorcio = grupo;
-        }
+        public Cota() {}
         public Cota(CotaUpdateDto cota)
         {
-            ValorParcela = cota.ValorParcela;
-            ValorDaCartaDeCredito = cota.ValorDaCartaDeCredito;
-            QteParcelas = cota.QteParcelas;
-            Atribuida = cota.Atribuida;
-            TotalPago = cota.TotalPago;
+            //TODO remover
         }
 
         public Cota(string numeroCota, int idGrupo, decimal valorParcela, decimal valorPago, decimal valorDaCartaDeCredito, int quantidadeDeParcelas, bool atribuida, DateOnly date)
