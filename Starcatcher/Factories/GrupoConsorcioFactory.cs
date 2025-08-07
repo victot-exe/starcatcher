@@ -6,14 +6,28 @@ namespace Starcatcher.Factories
 {
     public class GrupoConsorcioFactory
     {
-        public static GrupoConsorcio CriarGrupo(GrupoConsorcioDTOEntry grupo)
+        public static GrupoConsorcio CriarGrupo(GrupoConsorcioCreateDto grupo)
         {
-            //regra de negocio, vai receber o valor final
-            decimal valorFinalDeCotaComTaxa = CalcularValorFinalComTaxaDeAdministracao(grupo.ValorFinalPorCota, grupo.TaxaDeAdministracao);
+            decimal valorTotalDoGrupoSemTaxa = CalcularTotalDoGrupoSemTaxa(grupo.ValorFinalPorCota, grupo.QuantidadeDeCotas);
 
-            GrupoConsorcio result = new(grupo.Nome, (grupo.ValorFinalPorCota * grupo.QuantidadeDeCotas), grupo.TaxaDeAdministracao, grupo.QuantidadeDeCotas, (valorFinalDeCotaComTaxa * grupo.QuantidadeDeCotas), grupo.ParcelasPorCota);
+            GrupoConsorcio result = new(
+                grupo.NomeGrupo,
+                valorTotalDoGrupoSemTaxa,
+                grupo.TaxaDeAdministracao,
+                grupo.QuantidadeDeCotas,
+                CalcularTaxaAdministrativa(valorTotalDoGrupoSemTaxa, grupo.TaxaDeAdministracao));
 
             return result;
+        }
+
+        private static decimal CalcularTotalDoGrupoSemTaxa(decimal valorFinalSemTaxa, int quantidadeDeCotas)
+        {
+            return valorFinalSemTaxa * quantidadeDeCotas;
+        }
+
+        private static decimal CalcularTaxaAdministrativa(decimal valorTotalDoGrupoSemTaxa, decimal taxaDeAdministracao)
+        {
+            return valorTotalDoGrupoSemTaxa * (taxaDeAdministracao / 100);
         }
 
         private static decimal CalcularValorFinalComTaxaDeAdministracao(decimal valorSemJuros, decimal taxaDeAdministracao)
@@ -23,17 +37,23 @@ namespace Starcatcher.Factories
             return valorSemJuros * (1 + taxaDeAdministracao / 100);
         }
 
-        public static List<Cota> GerarCotas( GrupoConsorcio grupo)
+        public static List<Cota> GerarCotas(int grupoId, GrupoConsorcioCreateDto grupo)
         {
             List<Cota> cotas = [];
-            int numeroCota = 1;
+            int controle = 1;
+            string numeroCota = $"G{grupoId:D4}C";
             while (true)
             {
-                if (cotas.Count == grupo.QuantidadeDeParcelas)
+                if (cotas.Count == grupo.QuantidadeDeCotas)
                     break;
-
-                cotas.Add(CotaFactory.GerarCota(numeroCota, grupo.Id, grupo.ValorTotalDoGrupoComTaxa, grupo.ValorTotalDoGrupoSemTaxa, grupo.QuantidadeDeCotas, grupo.QuantidadeDeParcelas));
-                numeroCota++;
+                
+                string numeroCotaAtual = $"{numeroCota}{controle:D5}";
+                cotas.Add(CotaFactory.GerarCota(
+                                numeroCotaAtual,
+                                grupoId, grupo.ValorFinalPorCota,
+                                grupo.TaxaDeAdministracao,
+                                grupo.ParcelasPorCota));
+                controle++;
             }
             return cotas;
         }

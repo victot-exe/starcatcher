@@ -30,7 +30,7 @@ namespace Starcatcher.Middleware
             var statusCode = HttpStatusCode.InternalServerError;
             var mensagem = "Ocorreu um erro inesperado.";
 
-            if (ex is IdNaoEncontradoException)
+            if (ex is RecursoNaoEncontradoException)
             {
                 statusCode = HttpStatusCode.NotFound;
                 mensagem = ex.Message;
@@ -46,6 +46,11 @@ namespace Starcatcher.Middleware
                 mensagem = ex.Message;
             }
             else if (ex is NotValidException)
+            {
+                statusCode = HttpStatusCode.BadRequest;
+                mensagem = ex.Message;
+            }
+            else if (ex is UsuarioNaoEncontradoException)
             {
                 statusCode = HttpStatusCode.BadRequest;
                 mensagem = ex.Message;

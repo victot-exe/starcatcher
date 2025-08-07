@@ -2,11 +2,12 @@ using Starcatcher.Entities;
 
 namespace Starcatcher.DTOs
 {
-    public record CotaDTOExit(int Id,
-                                int NumeroCota,
-                                decimal ValorTotal,
-                                decimal Parcela,
-                                decimal TotalPago,
+    public record CotaDTOExit(
+                                int Id,
+                                string? NumeroCota,
+                                decimal? ValorTotal,
+                                decimal? Parcela,
+                                decimal? TotalPago,
                                 DateOnly DataCriacao,
                                 int GrupoId
     )

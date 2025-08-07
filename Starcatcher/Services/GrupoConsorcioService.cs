@@ -5,41 +5,51 @@ using Starcatcher.Factories;
 
 namespace Starcatcher.Services
 {
-    public class GrupoConsorcioService : IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio>
+    public class GrupoConsorcioService : IServiceGrupo
     {
-        private readonly IRepositoryGrupo<GrupoConsorcio, int, Cota> _repository;
+        private readonly IRepositoryGrupo _repository;
 
-        public GrupoConsorcioService(IRepositoryGrupo<GrupoConsorcio, int, Cota> repository)
+        private readonly ValidationExecutor _validations;
+
+        public GrupoConsorcioService(IRepositoryGrupo repository, ValidationExecutor validations)
         {
             _repository = repository;
+            _validations = validations;
         }
 
-        public GrupoConsorcio Create(GrupoConsorcioDTOEntry obj)
+        public GrupoConsorcioExitDto Create(GrupoConsorcioCreateDto grupoCreate)
         {
-            //TODO validar os dados enviados
-            GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(obj));
-            _repository.UpdateList(result.Id, GrupoConsorcioFactory.GerarCotas(result));
-            return result;
+            _validations.ExecuteAll(grupoCreate);
+            GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(grupoCreate));
+            _repository.AddListaDeCotas(result.Id, GrupoConsorcioFactory.GerarCotas(result.Id, grupoCreate));
+            return new(result);
+        }
+
+        public GrupoConsorcioExitDto Update(int id, GrupoConsorcioCreateDto grupo)
+        {
+            _validations.ExecuteAll(grupo);
+            GrupoConsorcio grupoUp = GrupoConsorcioFactory.CriarGrupo(grupo);
+            var retorno = _repository.Update(id, grupoUp);
+            if (retorno.First().Value)
+                _repository.UpdateListaDeCotas(id, GrupoConsorcioFactory.GerarCotas(id, grupo));
+
+            return new(retorno.First().Key);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _repository.Delete(id);
         }
 
-        public List<GrupoConsorcio> GetAll()
+        public List<GrupoConsorcioExitDto> GetAll()
         {
-            return [.._repository.GetAll()];
+            return [.. _repository.GetAll().Select(c=> new GrupoConsorcioExitDto(c))];
         }
 
-        public GrupoConsorcio GetById(int id)
+        public GrupoConsorcioExitDto GetById(int id)
         {
-            return _repository.GetById(id);
-        }
-
-        public GrupoConsorcio Update(int id, GrupoConsorcio obj)
-        {
-            throw new NotImplementedException();
+            var entity = _repository.GetById(id);
+            return new(entity);
         }
     }
 }

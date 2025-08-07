@@ -1,13 +1,11 @@
 namespace Starcatcher.DTOs
 {
-    public record GrupoConsorcioDTOEntry(
-        string Nome,
+    public record GrupoConsorcioCreateDto(
+        string NomeGrupo,
         decimal ValorFinalPorCota,
-        decimal TaxaDeAdministracao,//Ao mês
+        decimal TaxaDeAdministracao,
         int ParcelasPorCota,
         int QuantidadeDeCotas
     )
-    {
-        
-    }
+    {}
 }

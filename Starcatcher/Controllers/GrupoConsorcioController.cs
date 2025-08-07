@@ -1,7 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Starcatcher.Contracts;
 using Starcatcher.DTOs;
-using Starcatcher.Entities;
 
 namespace Starcatcher.Controllers
 {
@@ -9,8 +9,8 @@ namespace Starcatcher.Controllers
     [Route("grupos")]
     public class GrupoConsorcioController : ControllerBase
     {
-        private readonly IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio> _service;
-        public GrupoConsorcioController(IService<GrupoConsorcio, GrupoConsorcioDTOEntry, int, GrupoConsorcio> service)
+        private readonly IServiceGrupo _service;
+        public GrupoConsorcioController(IServiceGrupo service)
         {
             _service = service;
         }
@@ -21,23 +21,43 @@ namespace Starcatcher.Controllers
             return "GrupoConsorcioController Works!";
         }
 
+        [Authorize]
         [HttpPost]
-        public IActionResult Create(GrupoConsorcioDTOEntry grupo)
+        public IActionResult Create(GrupoConsorcioCreateDto grupo)
         {
-            GrupoConsorcio result = _service.Create(grupo);
+            GrupoConsorcioExitDto result = _service.Create(grupo);
             return Created("/" + result.Id, result);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
             return Ok(_service.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             return Ok(_service.GetById(id));
+        }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public IActionResult Update(int id,[FromBody] GrupoConsorcioCreateDto grupo)
+        {
+            var entity = _service.Update(id, grupo);
+            return Created("grupo/" + id, entity);
+        }
+        
+        [Authorize]
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _service.Delete(id);
+
+            return NoContent();
         }
     }
 }

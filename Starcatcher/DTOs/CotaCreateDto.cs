@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Starcatcher.DTOs
 {
-    public record CotaDTOEntry(
+    public record CotaCreateDto(
         [Required]int GrupoId)
     {
         

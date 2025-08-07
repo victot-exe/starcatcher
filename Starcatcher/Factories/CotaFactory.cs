@@ -4,22 +4,30 @@ namespace Starcatcher.Factories
 {
     public class CotaFactory
     {
-        public static Cota GerarCota(int numeroCota, int idGrupo, decimal valorTotalDoGrupoComTaxa, decimal valorTotalDoGrupoSemTaxa, int quantidadeDeCotas, int quantidadeDeParcelas)
+        public static Cota GerarCota(string numeroCota, int idGrupo, decimal valorDaCartaDeCredito, decimal taxaAdministrativa, int quantidadeDeParcelas)
         {
-            //pegar o valor da carta de credito
-            decimal valorDaCartaDeCredito = valorTotalDoGrupoSemTaxa / quantidadeDeCotas;
-            //pegar o numero da parcela
-            decimal valorParcela = valorTotalDoGrupoComTaxa / quantidadeDeCotas / quantidadeDeParcelas;
-            //total pago = 0
+            
             decimal valorPago = 0;
             bool atribuida = false;
-            // definir a data para hoje
+            
             DateOnly dataCriacao = DateOnly.FromDateTime(DateTime.Now);
-            //pegar o Id do grupo
+            
             Cota cota = new(
-                numeroCota, idGrupo, valorParcela, valorPago, valorDaCartaDeCredito, quantidadeDeParcelas, atribuida, dataCriacao
-            );
+                        numeroCota,
+                        idGrupo,
+                        CalcularValorDaParcela(valorDaCartaDeCredito, taxaAdministrativa, quantidadeDeParcelas),
+                        valorPago,
+                        valorDaCartaDeCredito,
+                        quantidadeDeParcelas,
+                        atribuida,
+                        dataCriacao
+                        );
             return cota;
+        }
+
+        private static decimal CalcularValorDaParcela(decimal valorDaCartaDeCredito, decimal taxaAdministrativa, int quantidadeDeParcelas)
+        {
+            return valorDaCartaDeCredito * (1 + taxaAdministrativa / 100) / quantidadeDeParcelas;
         }
     }
 }

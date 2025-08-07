@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Starcatcher.Entities.Context;
 
@@ -11,9 +12,11 @@ using Starcatcher.Entities.Context;
 namespace Starcatcher.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250801185651_AdicionandoUser")]
+    partial class AdicionandoUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,7 +33,7 @@ namespace Starcatcher.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool?>("Atribuida")
+                    b.Property<bool>("Atribuida")
                         .HasColumnType("bit");
 
                     b.Property<DateOnly>("DataDeAtribuicao")
@@ -39,22 +42,25 @@ namespace Starcatcher.Migrations
                     b.Property<int>("GrupoConsorcioId")
                         .HasColumnType("int");
 
-                    b.Property<string>("NumeroCota")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("QteParcelas")
+                    b.Property<int>("NumeroCota")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("TotalPago")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("UserId")
+                    b.Property<int>("QteParcelas")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("ValorDaCartaDeCredito")
+                    b.Property<decimal>("TotalPago")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("ValorParcela")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ValorDaCartaDeCredito")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ValorParcela")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ValorTotal")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -74,20 +80,23 @@ namespace Starcatcher.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("NomeDoGrupo")
+                    b.Property<string>("Grupo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("QuantidadeDeCotas")
+                    b.Property<int>("QuantidadeDeCotas")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("TaxaAdministrativa")
+                    b.Property<int>("QuantidadeDeParcelas")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TaxaAdministrativa")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("ValorTaxaAdministrativa")
+                    b.Property<decimal>("ValorTotalDoGrupoComTaxa")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("ValorTotalDoGrupoSemTaxa")
+                    b.Property<decimal>("ValorTotalDoGrupoSemTaxa")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");

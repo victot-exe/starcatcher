@@ -1,12 +1,15 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Tokens;
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.Entities.Context;
 using Starcatcher.Exceptions;
+using Starcatcher.Factories;
 
 namespace Starcatcher.Repository
 {
-    public class GrupoConsorcioRepository : IRepositoryGrupo<GrupoConsorcio, int, Cota>//TODO implementar
+    public class GrupoConsorcioRepository : IRepositoryGrupo
     {
         private readonly ApplicationDbContext _context;
         public GrupoConsorcioRepository(ApplicationDbContext context)
@@ -14,23 +17,23 @@ namespace Starcatcher.Repository
             _context = context;
         }
 
-        public GrupoConsorcio Create(GrupoConsorcio obj)
+        public GrupoConsorcio Create(GrupoConsorcio grupo)
         {
             try
             {
-                _context.Grupos.Add(obj);
+                _context.Grupos.Add(grupo);
                 _context.SaveChanges();
             }
             catch (Exception ex)
             {
                 throw new GenericException(ex.Message);
             }
-            return obj;
+            return grupo;
         }
 
         public void Delete(int id)
         {
-            var entitie = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException(id);
+            var entitie = _context.Grupos.Find(id) ?? throw new RecursoNaoEncontradoException(id);
             _context.Grupos.Remove(entitie);
             _context.SaveChanges();
         }
@@ -43,28 +46,77 @@ namespace Starcatcher.Repository
         public GrupoConsorcio GetById(int id)
         {
             return _context.Grupos.Find(id)
-                        ?? throw new IdNaoEncontradoException(id);
+                        ?? throw new RecursoNaoEncontradoException(id);
         }
 
-        public GrupoConsorcio Update(int id, GrupoConsorcio obj)
+        public Dictionary<GrupoConsorcio, bool> Update(int id, GrupoConsorcio grupo)
         {
-            var entity = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException(id);
-            //TODO logica para atualizar apenas os que não vierem null
-            entity.Grupo = obj.Grupo;
-            entity.Cotas = obj.Cotas;
-            entity.ValorTotalDoGrupoSemTaxa = obj.ValorTotalDoGrupoSemTaxa;
-            entity.QuantidadeDeCotas = obj.QuantidadeDeCotas;
-            entity.ValorTotalDoGrupoComTaxa = obj.ValorTotalDoGrupoComTaxa;
-            entity.QuantidadeDeParcelas = obj.QuantidadeDeParcelas;
+            var entity = _context.Grupos.Find(id) ?? throw new RecursoNaoEncontradoException(id);
+
+            bool alterouValor = false;
+
+            if (!grupo.NomeDoGrupo.IsNullOrEmpty())
+                entity.NomeDoGrupo = grupo.NomeDoGrupo;
+
+            if (grupo.ValorTotalDoGrupoSemTaxa.HasValue)
+            {
+                entity.ValorTotalDoGrupoSemTaxa = grupo.ValorTotalDoGrupoSemTaxa;
+                alterouValor = true;
+            }
+            if (grupo.QuantidadeDeCotas.HasValue)
+            {
+                entity.QuantidadeDeCotas = grupo.QuantidadeDeCotas;
+                alterouValor = true;
+            }
+
+            if (grupo.TaxaAdministrativa.HasValue)
+            {
+                entity.TaxaAdministrativa = grupo.TaxaAdministrativa;
+                alterouValor = true;
+            }
+
+            if (grupo.ValorTaxaAdministrativa.HasValue)
+            {
+                entity.ValorTaxaAdministrativa = grupo.TaxaAdministrativa;
+                alterouValor = true;
+            }
 
             _context.SaveChanges();
 
+            var retorno = new Dictionary<GrupoConsorcio, bool>
+            {
+                [entity] = alterouValor
+            };
+
+            return retorno;
+        }
+
+        public GrupoConsorcio UpdateListaDeCotas(int id, List<Cota> cotas)
+        {
+            var entity = _context.Grupos.Include(g => g.Cotas).FirstOrDefault(g => g.Id ==id) ?? throw new RecursoNaoEncontradoException(id);
+            if (entity.Cotas.Count != cotas.Count)
+                throw new NotValidException($"O numero de cotas por grupo não pode ser alterado.\nO numero deve ser: {cotas.Count}");
+            
+            entity.Cotas.ForEach(
+                c =>
+                {
+                    var cotaUp = cotas.FirstOrDefault(
+                        co => co.NumeroCota == c.NumeroCota
+                    );
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    c.DataDeAtribuicao = cotaUp.DataDeAtribuicao;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    c.QteParcelas = cotaUp.QteParcelas;
+                    c.ValorDaCartaDeCredito = cotaUp.ValorDaCartaDeCredito;
+                    c.ValorParcela = cotaUp.ValorParcela;
+                });
+            _context.SaveChanges();
             return entity;
         }
 
-        public GrupoConsorcio UpdateList(int id, List<Cota> cotas)
+        public GrupoConsorcio AddListaDeCotas(int id, List<Cota> cotas)
         {
-            var entity = _context.Grupos.Find(id) ?? throw new IdNaoEncontradoException(id);
+            var entity = _context.Grupos.Find(id) ?? throw new RecursoNaoEncontradoException(id);
             entity.Cotas = cotas;
 
             _context.SaveChanges();

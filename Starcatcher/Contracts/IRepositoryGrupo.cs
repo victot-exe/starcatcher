@@ -2,21 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Starcatcher.Entities;
 
 namespace Starcatcher.Contracts
 {
-    public interface IRepositoryGrupo<T, I, L>
+    public interface IRepositoryGrupo
     {
-        public T Create(T obj);
+        public GrupoConsorcio Create(GrupoConsorcio grupo);
 
-        public List<T> GetAll();
+        public List<GrupoConsorcio> GetAll();
 
-        public T GetById(I Id);
+        public GrupoConsorcio GetById(int id);
 
-        public T Update(I id, T obj);
+        public Dictionary<GrupoConsorcio, bool> Update(int id, GrupoConsorcio grupo);
 
-        public void Delete(I id);
+        public void Delete(int id);
 
-        public T UpdateList(I id, List<L> list);
+        public GrupoConsorcio AddListaDeCotas(int id, List<Cota> list);
+
+        public GrupoConsorcio UpdateListaDeCotas(int id, List<Cota> cotas);
     }
 }
