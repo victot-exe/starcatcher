@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.Entities.Context;
@@ -25,7 +24,14 @@ namespace Starcatcher.Repository
 
         public void Delete(int id)
         {
-            var entitie = _context.Users.Find(id) ?? throw new RecursoNaoEncontradoException(id);
+            var entitie = _context.Users.Include(
+                u => u.Cotas)
+                .FirstOrDefault(u => u.Id == id) ?? throw new RecursoNaoEncontradoException(id);
+
+            entitie.Cotas.ForEach(
+                c => c.Atribuida = false
+            );
+
             _context.Users.Remove(entitie);
             _context.SaveChanges();
         }
