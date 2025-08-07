@@ -19,7 +19,6 @@ namespace Starcatcher.Services
 
         public GrupoConsorcioExitDto Create(GrupoConsorcioCreateDto grupoCreate)
         {
-            //TODO validar os dados enviados
             _validations.ExecuteAll(grupoCreate);
             GrupoConsorcio result =_repository.Create(GrupoConsorcioFactory.CriarGrupo(grupoCreate));
             _repository.AddListaDeCotas(result.Id, GrupoConsorcioFactory.GerarCotas(result.Id, grupoCreate));
@@ -28,7 +27,7 @@ namespace Starcatcher.Services
 
         public GrupoConsorcioExitDto Update(int id, GrupoConsorcioCreateDto grupo)//TODO um dto para atualização que não permite atualizar o numero de cotas
         {
-            //TODO validar os dados enviados
+            _validations.ExecuteAll(grupo);
             GrupoConsorcio grupoUp = GrupoConsorcioFactory.CriarGrupo(grupo);
             var retorno = _repository.Update(id, grupoUp);
             if (retorno.First().Value)

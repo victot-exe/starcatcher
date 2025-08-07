@@ -7,7 +7,5 @@ namespace Starcatcher.DTOs
         int ParcelasPorCota,
         int QuantidadeDeCotas
     )
-    {
-        
-    }
+    {}
 }

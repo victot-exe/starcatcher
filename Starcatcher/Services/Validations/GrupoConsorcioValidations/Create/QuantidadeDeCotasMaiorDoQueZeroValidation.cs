@@ -2,7 +2,7 @@ using Starcatcher.Contracts;
 using Starcatcher.DTOs;
 using Starcatcher.Exceptions;
 
-namespace Starcatcher.Services.Validations.GrupoConsorcioValidations
+namespace Starcatcher.Services.Validations.GrupoConsorcioValidations.Create
 {
     public class QuantidadeDeCotasMaiorDoQueZeroValidation : IValidation<GrupoConsorcioCreateDto>
     {
