@@ -94,6 +94,9 @@ namespace Starcatcher.Repository
         public GrupoConsorcio UpdateListaDeCotas(int id, List<Cota> cotas)
         {
             var entity = _context.Grupos.Include(g => g.Cotas).FirstOrDefault(g => g.Id ==id) ?? throw new RecursoNaoEncontradoException(id);
+            if (entity.Cotas.Count != cotas.Count)
+                throw new NotValidException("O numero de cotas por grupo não pode ser alterado.");
+            
             entity.Cotas.ForEach(
                 c =>
                 {

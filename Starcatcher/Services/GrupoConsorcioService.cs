@@ -25,7 +25,7 @@ namespace Starcatcher.Services
             return new(result);
         }
 
-        public GrupoConsorcioExitDto Update(int id, GrupoConsorcioCreateDto grupo)//TODO um dto para atualização que não permite atualizar o numero de cotas
+        public GrupoConsorcioExitDto Update(int id, GrupoConsorcioCreateDto grupo)
         {
             _validations.ExecuteAll(grupo);
             GrupoConsorcio grupoUp = GrupoConsorcioFactory.CriarGrupo(grupo);
