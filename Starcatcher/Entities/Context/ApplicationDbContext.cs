@@ -22,7 +22,9 @@ namespace Starcatcher.Entities.Context
             .HasForeignKey(c => c.UserId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.SetNull);
-            
+
+            modelBuilder.Entity<User>()
+            .HasIndex(u => u.Username).IsUnique();
             //TODO colcocar as outras restrições para o banco
         }
     }
