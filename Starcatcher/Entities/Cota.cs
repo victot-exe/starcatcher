@@ -8,10 +8,6 @@ namespace Starcatcher.Entities
     public class Cota
     {
         public Cota() {}
-        public Cota(CotaUpdateDto cota)
-        {
-            //TODO remover
-        }
 
         public Cota(string numeroCota, int idGrupo, decimal valorParcela, decimal valorPago, decimal valorDaCartaDeCredito, int quantidadeDeParcelas, bool atribuida, DateOnly date)
         {

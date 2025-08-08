@@ -5,7 +5,7 @@ namespace Starcatcher.Services
 {
     public class ValidationExecutor
     {
-        public void ExecuteAll<T>(T obj)//TODO usar para validar varias coisas pendentes
+        public void ExecuteAll<T>(T obj)
         {
             var validationTypes = Assembly.GetExecutingAssembly()
                 .GetTypes()
