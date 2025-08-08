@@ -29,9 +29,9 @@ namespace Starcatcher.Services
             return new(user);
         }
 
-        public void Delete(int id)
+        public void Delete(string username)
         {
-            _repository.Delete(id);
+            _repository.Delete(username);
         }
 
         public List<UserExitDto> GetAll()

@@ -47,10 +47,10 @@ namespace Starcatcher.Controllers
         }//
 
         [Authorize]
-        [HttpDelete("{id}")]
-        public void DeleteById(int id)
+        [HttpDelete("{username}")]
+        public void DeleteById(string username)
         {
-            _service.Delete(id);
+            _service.Delete(username);
         }
     }
 }

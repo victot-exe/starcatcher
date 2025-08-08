@@ -13,6 +13,6 @@ namespace Starcatcher.Contracts
 
         public UserExitDto Update(int id, UserEntryDto obj);
 
-        public void Delete(int id);
+        public void Delete(string id);
     }
 }

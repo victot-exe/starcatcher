@@ -22,11 +22,11 @@ namespace Starcatcher.Repository
             return user;
         }
 
-        public void Delete(int id)
+        public void Delete(string username)
         {
             var entitie = _context.Users.Include(
                 u => u.Cotas)
-                .FirstOrDefault(u => u.Id == id) ?? throw new RecursoNaoEncontradoException(id);
+                .FirstOrDefault(u => u.Username == username) ?? throw new RecursoNaoEncontradoException(username);
 
             entitie.Cotas.ForEach(
                 c => c.Atribuida = false
