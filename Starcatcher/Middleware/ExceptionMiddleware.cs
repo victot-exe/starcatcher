@@ -1,5 +1,7 @@
 using System.Net;
 using System.Text.Json;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Starcatcher.Exceptions;
 
 namespace Starcatcher.Middleware
@@ -28,7 +30,7 @@ namespace Starcatcher.Middleware
         private static Task TratarExcecaoAsync(HttpContext context, Exception ex)
         {
             var statusCode = HttpStatusCode.InternalServerError;
-            var mensagem = "Ocorreu um erro inesperado.";
+            var mensagem = ex.Message;
 
             if (ex is RecursoNaoEncontradoException)
             {
@@ -55,7 +57,12 @@ namespace Starcatcher.Middleware
                 statusCode = HttpStatusCode.BadRequest;
                 mensagem = ex.Message;
             }
-            //TODO tratar as outras que ainda vou fazer com else if
+            else if (ex is UsuarioJaExisteException)
+            {
+                statusCode = HttpStatusCode.Conflict;
+                mensagem = ex.Message;
+            }
+
             var result = JsonSerializer.Serialize(new
             {
                 sucesso = false,

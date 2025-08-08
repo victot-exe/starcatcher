@@ -9,7 +9,7 @@ namespace Starcatcher.Contracts
         public User GetByUsername(string username);
         public User GetById(int id);
         public User Update(int id, User obj);
-        public void Delete(int id);
+        public void Delete(string username);
         public User AdicionarCota(int id, Cota cota);
     }
 }

@@ -2,7 +2,9 @@ using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.DTOs;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using Starcatcher.Exceptions;
 
 namespace Starcatcher.Services
 {
@@ -22,18 +24,24 @@ namespace Starcatcher.Services
 
         public UserExitDto Create(UserEntryDto userDto)
         {
-            //TODO validacoes
             _validations.ExecuteAll(userDto);
             User user = new(userDto.Username, userDto.Password);
             user.Password = _passwordHasher.HashPassword(user, user.Password);
-            _repository.Create(user);
+            try
+            {
+                _repository.Create(user);
+            }
+            catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+            {
+                throw new UsuarioJaExisteException(user.Username);
+            }
 
             return new(user);
         }
 
-        public void Delete(int id)
+        public void Delete(string username)
         {
-            _repository.Delete(id);
+            _repository.Delete(username);
         }
 
         public List<UserExitDto> GetAll()
@@ -49,12 +57,20 @@ namespace Starcatcher.Services
 
         public UserExitDto Update(int id, UserEntryDto user)
         {
-            
+
             User entity = new(user.Username, user.Password);
-            
+
             entity.Password = _passwordHasher.HashPassword(entity, entity.Password);
 
             return new(_repository.Update(id, entity));
+        }
+
+        private bool IsUniqueConstraintViolation(DbUpdateException ex)
+        {
+            if (ex.InnerException is SqlException sqlEx)
+            return sqlEx.Number == 2601 || sqlEx.Number == 2627;
+
+            return false;
         }
     }
 }

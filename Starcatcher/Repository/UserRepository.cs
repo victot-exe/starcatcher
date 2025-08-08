@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Starcatcher.Contracts;
 using Starcatcher.Entities;
 using Starcatcher.Entities.Context;
@@ -23,9 +22,16 @@ namespace Starcatcher.Repository
             return user;
         }
 
-        public void Delete(int id)
+        public void Delete(string username)
         {
-            var entitie = _context.Users.Find(id) ?? throw new RecursoNaoEncontradoException(id);
+            var entitie = _context.Users.Include(
+                u => u.Cotas)
+                .FirstOrDefault(u => u.Username == username) ?? throw new RecursoNaoEncontradoException(username);
+
+            entitie.Cotas.ForEach(
+                c => c.Atribuida = false
+            );
+
             _context.Users.Remove(entitie);
             _context.SaveChanges();
         }
@@ -37,7 +43,7 @@ namespace Starcatcher.Repository
 
         public User GetByUsername(string username)
         {
-            return _context.Users
+            return _context.Users.Include(u=> u.Cotas)
                     .SingleOrDefault(u => u.Username == username)
                         ?? throw new RecursoNaoEncontradoException(username);
         }
