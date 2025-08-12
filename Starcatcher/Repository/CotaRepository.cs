@@ -16,7 +16,7 @@ namespace Starcatcher.Repository
         }
         public Cota Create(int obj, int userId)
         {
-            Cota result = _context.Cotas
+            Cota result = _context.Cotas//TODO para retornar todas
                 .FirstOrDefault(c => c.GrupoConsorcioId == obj && c.Atribuida != true) ?? throw new RecursoNaoEncontradoException(obj);
             
             result.Atribuida = true;

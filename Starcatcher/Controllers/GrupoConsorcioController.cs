@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Starcatcher.Contracts;
 using Starcatcher.DTOs;
-
+//TODO ver de colocar retorno com paginas ao inves de todos os resultados de uma vez
 namespace Starcatcher.Controllers
 {
     [ApiController]

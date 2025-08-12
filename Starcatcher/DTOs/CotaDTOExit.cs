@@ -2,7 +2,7 @@ using Starcatcher.Entities;
 
 namespace Starcatcher.DTOs
 {
-    public record CotaDTOExit(
+    public record CotaDTOExit(//TODO userId e atribuido -> vou precisar para usar no front
                                 int Id,
                                 string? NumeroCota,
                                 decimal? ValorTotal,
