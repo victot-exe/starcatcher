@@ -24,19 +24,17 @@ namespace Starcatcher.Services
 
         public CotaDTOExit Create(int grupoId)
         {
-
-            // _validations.ExecuteAll(obj);//TODO definir as validações
             var user = _httpContextAccessor.HttpContext?.User;
             var claimUserId = user?.FindFirst("userId")?.Value;
             
             if (int.TryParse(claimUserId, out int userId))
             {
 
-                Cota created = _repository.Create(grupoId, userId);//passar o user Id para adicionar ao usuario a lista
+                Cota created = _repository.Create(grupoId, userId);
 
                 return new CotaDTOExit(created);
             }
-            else throw new UnauthorizedAccessException("O usuario nao esta autenticado");
+            else throw new UnauthorizedAccessException("O usuario não esta autenticado");
         }
 
         public void Delete(int id)
@@ -46,7 +44,7 @@ namespace Starcatcher.Services
 
         public List<CotaDTOExit> GetAll()
         {
-            List<CotaDTOExit> saida = [.. _repository.GetAll().Select(c => new CotaDTOExit(c))];//fazer verificação para o caso de a lista estar vazia e lançar a exceção
+            List<CotaDTOExit> saida = [.. _repository.GetAll().Select(c => new CotaDTOExit(c))];
             if (saida.IsNullOrEmpty())
             {
                 throw new ListaVaziaException();
@@ -61,7 +59,6 @@ namespace Starcatcher.Services
 
         public CotaDTOExit Update(int id, CotaUpdateDto update)
         {
-            //TODO regras de negocio usar reflections ou algo parecido
             return new(_repository.Update(id, update.Pagamento));
         }
     }

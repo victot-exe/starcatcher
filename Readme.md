@@ -235,4 +235,10 @@ A resposta será assim:
 - `[POST].../cotas/{id}` -> este recurso ele pega uma cota criada previamente, e retorna a primeira que tem o atributo Atribuida como false;
 - `[GET].../cotas/` -> retorna todas as cotas que tem Atribuida como true;
 - `[GET].../cotas/{id}` -> retorna a cota com o respectivo id independente do Atribuida ser true ou false;
-- `[PUT].../cotas/{}` -> em alteração
+- `[PUT].../cotas/{id}` -> recebe um id e o body com o valor da parcela que foi paga para somar com o total pago e persiste em banco de dados
+	- Body:
+	~~~json
+	{
+		"Pagamento": 10
+	}
+	~~~

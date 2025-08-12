@@ -77,7 +77,7 @@ namespace Starcatcher.Repository
 
             if (grupo.ValorTaxaAdministrativa.HasValue)
             {
-                entity.ValorTaxaAdministrativa = grupo.TaxaAdministrativa;
+                entity.ValorTaxaAdministrativa = grupo.ValorTaxaAdministrativa;
                 alterouValor = true;
             }
 
@@ -93,9 +93,9 @@ namespace Starcatcher.Repository
 
         public GrupoConsorcio UpdateListaDeCotas(int id, List<Cota> cotas)
         {
-            var entity = _context.Grupos.Include(g => g.Cotas).FirstOrDefault(g => g.Id ==id) ?? throw new RecursoNaoEncontradoException(id);
+            var entity = _context.Grupos.Include(g => g.Cotas).IgnoreQueryFilters().FirstOrDefault(g => g.Id ==id) ?? throw new RecursoNaoEncontradoException(id);
             if (entity.Cotas.Count != cotas.Count)
-                throw new NotValidException($"O numero de cotas por grupo não pode ser alterado.\nO numero deve ser: {cotas.Count}");
+                throw new NotValidException($"O numero de cotas por grupo não pode ser alterado.\nO numero deve ser: {entity.Cotas.Count}");
             
             entity.Cotas.ForEach(
                 c =>

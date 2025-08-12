@@ -49,8 +49,8 @@ namespace Starcatcher.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateCota(int id,[FromBody] CotaUpdateDto cotaNew)
         {
-            _service.Update(id, cotaNew);
-            return Created("cotas/" + id, cotaNew);
+            var result = _service.Update(id, cotaNew);
+            return Created("cotas/" + id, result);
         }
 
         [Authorize]

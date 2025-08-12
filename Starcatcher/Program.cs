@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.OpenApi.Models;
 using Starcatcher.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,51 +51,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)//Conf
 
 builder.Services.AddAuthorization();
 
-//TODO remover o swagger
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddCors(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "StarcatcherAPI", Version = "v1" });
-
-    var securityScheme = new OpenApiSecurityScheme
+    options.AddPolicy("AllowAll", policy =>
     {
-        Name = "Auth",
-        Description = "Insira o Token JWt no formato: Bearer {seu_token}",
-        In = ParameterLocation.Header, //TODO aqui eu troco pra por o cookie
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        Reference = new OpenApiReference
-        {
-            Type = ReferenceType.SecurityScheme,
-            Id = "Bearer"
-        }
-    };
-
-    c.AddSecurityDefinition("Bearer", securityScheme);
-
-    var securityRequirement = new OpenApiSecurityRequirement
-    {
-        {
-            securityScheme,
-            Array.Empty<string>()
-        }
-    };
-    c.AddSecurityRequirement(securityRequirement);
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
 
 var app = builder.Build();
 
-app.MapGet("/", context =>
-{
-    context.Response.Redirect("/swagger");
-    return Task.CompletedTask;
-});
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
